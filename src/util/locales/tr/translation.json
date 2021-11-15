@@ -1,0 +1,12 @@
+{
+    "login": "Giriş yap",
+    "email": "E-posta",
+    "password": "Şifre",
+    "remember_me": "Beni hatırla",
+    "error": "Hata! ",
+    "unexpected_response": "Sunucudan beklenen bir yanıt gelmedi.",
+    "occurred_connecting_error": "Sunucuya bağlanırken bir hata oluştu.",
+    "dashboard": "Adminpanel",
+    "categories": "Kategoriler",
+    "articles": "Makaleler"
+}
