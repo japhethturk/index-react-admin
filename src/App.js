@@ -51,6 +51,7 @@ import { AuthService } from './service/AuthService';
 import { Functions } from './util/Functions';
 import Categories from './components/Categories';
 import Articles from './components/Articles';
+import CategoryDetail from './components/CategoryDetail';
 
 const App = () => {
     const {t} = useTranslation()
@@ -376,6 +377,7 @@ const App = () => {
                     <div className="layout-main">
                         <Route path="/" exact component={Dashboard}/>
                         <Route path="/categories" component={Categories}/>
+                        <Route path="/category/add" component={CategoryDetail}/>
                         <Route path="/articles" component={Articles}/>
                         <Route path="/formlayout" component={FormLayoutDemo}/>
                         <Route path="/input" component={InputDemo}/>

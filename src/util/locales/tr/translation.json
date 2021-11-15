@@ -8,5 +8,15 @@
     "occurred_connecting_error": "Sunucuya bağlanırken bir hata oluştu.",
     "dashboard": "Adminpanel",
     "categories": "Kategoriler",
-    "articles": "Makaleler"
+    "category": "Kategori",
+    "add_category": "Kategori ekle",
+    "articles": "Makaleler",
+    "parent_category": "Üst kategori",
+    "select_category": "Bir kategori üst seçin. (İsteğe bağlı)",
+    "parent_category_description": "Bir kategori seçerseniz, bu kategori ona ait olacaktır.",
+    "name": "İsim",
+    "slug": "Uzantı",
+    "click_to_edit": "Düzenlemek için tıkla",
+    "meta_description": "Meta açıklama",
+    "save": "Sakla"
 }

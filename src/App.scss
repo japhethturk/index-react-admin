@@ -504,6 +504,13 @@ pre[class*="language-"] {
 .p-message-summary{
     margin-right: 5px;
 }
+
+.p-fluid {
+    .p-field.p-grid {
+        margin-bottom: 1.5em;
+    }
+}
+
 @media screen and (max-width: 960px) {
     .customized-timeline {
         .p-timeline-event:nth-child(even) {

@@ -2,17 +2,18 @@ import { Button } from "primereact/button";
 import { Card } from "primereact/card";
 import { Menu } from "primereact/menu";
 import React, {useEffect, useRef, useState} from "react";
+import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router";
 
 
 const Categories = (props) => {
     const history = useHistory()
+    const {t} = useTranslation()
 
     const cardHeader = (
         <div className="flex align-items-center justify-content-between mb-0 p-3 pb-0">
-            <h5 className="m-0">Card</h5>
+            <h5 className="m-0">{t('categories')}</h5>
             <Button icon="pi pi-plus" className="p-button-text" onClick={(event) => history.push('/category/add')} />
-            
         </div>
     );
 
