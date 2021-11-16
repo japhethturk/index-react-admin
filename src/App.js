@@ -378,6 +378,7 @@ const App = () => {
                         <Route path="/" exact component={Dashboard}/>
                         <Route path="/categories" component={Categories}/>
                         <Route path="/category/add" component={CategoryDetail}/>
+                        <Route path="/category/edit/:id" component={CategoryDetail}/>
                         <Route path="/articles" component={Articles}/>
                         <Route path="/formlayout" component={FormLayoutDemo}/>
                         <Route path="/input" component={InputDemo}/>

@@ -161,12 +161,6 @@ const CategoryDetail = (props) => {
                         </div>
                     </div>
                     <div className="p-field p-grid">
-                        {/* <label
-                            htmlFor="parent_category"
-                            className="p-col-12 p-md-2"
-                        >
-                            {t("parent_category")}
-                        </label> */}
                         <div className="p-col-12 p-md-10">
                             <TreeSelect
                                 value={selectedParentKey}
@@ -180,9 +174,6 @@ const CategoryDetail = (props) => {
                         </div>
                     </div>
                     <div className="p-field p-grid">
-                        {/* <label htmlFor="name" className="p-col-12 p-md-2">
-                            {t("name")}
-                        </label> */}
                         <div className="p-col-12 p-md-10">
                             <InputText
                                 id="name"
@@ -201,16 +192,13 @@ const CategoryDetail = (props) => {
                         </div>
                     </div>
                     <div className="p-field p-grid">
-                        <label htmlFor="slug" className="p-col-12 p-md-2">
-                            {t("slug")}
-                        </label>
                         <div
                             className="p-col-12 p-md-10"
                             style={{alignSelf: "center"}}
                         >
                             <Inplace closable>
                                 <InplaceDisplay>
-                                    {slug || t("click_to_edit")}
+                                    {slug || t("slug")}
                                 </InplaceDisplay>
                                 <InplaceContent>
                                     <InputText
@@ -228,28 +216,21 @@ const CategoryDetail = (props) => {
                         </div>
                     </div>
                     <div className="p-field p-grid">
-                        <label htmlFor="meta_keywords" className="p-col-12 p-md-2">
-                            {t("meta_keywords")}
-                        </label>
                         <div className="p-col-12 p-md-10">
                             <Chips
                                 value={keywords}
+                                placeholder={t("meta_keywords")}
                                 onChange={(e) => setKeywords(e.value)}
                                 separator=","
                             />
                         </div>
                     </div>
                     <div className="p-field p-grid">
-                        <label
-                            htmlFor="meta_description"
-                            className="p-col-12 p-md-2"
-                        >
-                            {t("meta_description")}
-                        </label>
                         <div className="p-col-12 p-md-10">
                             <InputTextarea
                                 maxLength={255}
                                 rows={5}
+                                placeholder={t("meta_description")}
                                 value={description}
                                 onChange={(e) => setDescription(e.target.value)}
                             />

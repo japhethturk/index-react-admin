@@ -18,5 +18,14 @@
     "slug": "Uzantı",
     "click_to_edit": "Düzenlemek için tıkla",
     "meta_description": "Meta açıklama",
-    "save": "Sakla"
+    "meta_keywords": "Meta anahtar sözler",
+    "save": "Sakla",
+    "deselect": "Seçimi kaldır",
+    "date": "Tarih",
+    "public": "Görünür",
+    "operation": "",
+    "confirmation" :"Onayla",
+    "confirmation_delete": "\":attribute\"silmek istediğinizden emin misiniz?",
+    "no": "Hayır",
+    "yes": "Evet"
 }
