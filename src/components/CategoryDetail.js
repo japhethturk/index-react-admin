@@ -16,6 +16,7 @@ import {Checkbox} from "primereact/checkbox";
 import { Functions } from "../util/Functions";
 import { CategoryService } from "../service/CategoryService";
 import { Chips } from "primereact/chips";
+import SelectLanguage from "./layout/SelectLanguage";
 
 
 const CategoryDetail = (props) => {
@@ -33,6 +34,7 @@ const CategoryDetail = (props) => {
     const [treeOption, setTreeOption] = useState([]);
     const [selectedParentKey, setSelectedParentKey] = useState(null);
     const [showProgress, setShowProgress] = useState(true);
+    const [langId, setLangId] = useState(appState.langId)
 
 
     const categoryService = new CategoryService()
@@ -139,9 +141,12 @@ const CategoryDetail = (props) => {
 
 
     const cardHeader = (
-        <div className="flex align-items-center justify-content-start mb-0 p-3 pb-0">
-            <Button icon="pi pi-arrow-left" className="p-button-text" onClick={(event) => history.goBack()} />
-            <h5 className="m-0">{t('add_category')}</h5>
+        <div className="flex align-items-center justify-content-between mb-0 p-3 pb-0">
+            <div className="flex align-items-center justify-content-between">
+                <Button icon="pi pi-arrow-left" className="p-button-text" onClick={(event) => history.goBack()} />
+                <h5 className="m-0">{t('add_category')}</h5>
+            </div>
+            <SelectLanguage value={langId}  onChange={(e) => setLangId(e.value)}/>
         </div>
     );
     

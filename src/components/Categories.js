@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState, useContext} from "react";
+import React, {useEffect, useRef, useState, useContext, useReducer} from "react";
 import { Button } from "primereact/button";
 import { Card } from "primereact/card";
 import { useTranslation } from "react-i18next";
@@ -10,6 +10,7 @@ import {InputText} from "primereact/inputtext";
 import {Dialog} from "primereact/dialog";
 import StateContext from "../util/context/StateContext";
 import { CategoryService } from "../service/CategoryService";
+import SelectLanguage from "./layout/SelectLanguage";
 
 
 const Categories = (props) => {
@@ -17,15 +18,18 @@ const Categories = (props) => {
     const {t} = useTranslation()
     const appState = useContext(StateContext);
     const messages = useRef(null);
-    const [categories, setCategories] = useState([]);
-    const [showProgress, setShowProgress] = useState(true);
-    const [globalFilter, setGlobalFilter] = useState(null);
-    const [deleteRow, setDeleteRow] = useState({});
+    const [categories, setCategories] = useState([])
+    const [showProgress, setShowProgress] = useState(true)
+    const [globalFilter, setGlobalFilter] = useState(null)
+    const [deleteRow, setDeleteRow] = useState({})
+    const [langId, setLangId] = useState(appState.langId)
     const dateFormat = require("dateformat");
+
 
     const cardHeader = (
         <div className="flex align-items-center justify-content-between mb-0 p-3 pb-0">
             <h5 className="m-0">{t('categories')}</h5>
+            <SelectLanguage value={langId}  onChange={(e) => setLangId(e.value)}/>
             <Button icon="pi pi-plus" className="p-button-text" onClick={(event) => history.push('/category/add')} />
         </div>
     );
@@ -51,27 +55,6 @@ const Categories = (props) => {
             });
     }, []);
 
-    const nameTemplate = (node) => {
-        return (
-            <React.Fragment>
-                <span className="sm-invisible">{node.data.name}</span>
-                <div className="sm-visible"> {node.data.name}</div>
-                <div className="sm-visible">
-                    {" "}
-                    <Link target="_blank" to={`/category/${node.data.slug}`}>
-                        {node.data.slug}
-                    </Link>{" "}
-                </div>
-                <div className="sm-visible">
-                    {" "}
-                    {dateFormat(
-                        node.data.date,
-                        process.env.REACT_APP_DATE_FORMAT
-                    )}
-                </div>
-            </React.Fragment>
-        );
-    };
 
     const getHeader = () => {
         return (
@@ -161,6 +144,7 @@ const Categories = (props) => {
                     )}
                 </p>
             </Dialog>
+
 
             <div>
                 <TreeTable

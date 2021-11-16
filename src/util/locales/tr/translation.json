@@ -27,5 +27,7 @@
     "confirmation" :"Onayla",
     "confirmation_delete": "\":attribute\"silmek istediğinizden emin misiniz?",
     "no": "Hayır",
-    "yes": "Evet"
+    "yes": "Evet",
+    "no_records_found": "Kayıt bulunamadı",
+    "search": "Ara"
 }

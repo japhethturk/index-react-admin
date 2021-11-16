@@ -73,6 +73,7 @@ const App = () => {
 
     const initialState = {
         isMobile: false,
+        langId: localStorage.getItem("LANG_ID") ? localStorage.getItem("LANG_ID") : "1",
         channel: null,
         siteData:{},
         admin: {
@@ -100,6 +101,8 @@ const App = () => {
                     role: ''
                 }
                 return
+            case "setLang":
+                draft.langId = action.data
                 return
             default:
         }
@@ -163,6 +166,9 @@ const App = () => {
         }
     }, [state.adminLoggedIn])
 
+    useEffect(() => {
+        localStorage.setItem("LANG_ID", state.langId);
+    }, [state.langId])
     
     useEffect(() => {
         if (mobileMenuActive) {
@@ -171,10 +177,6 @@ const App = () => {
             removeClass(document.body, "body-overflow-hidden");
         }
     }, [mobileMenuActive]);
-
-    const onInputStyleChange = (inputStyle) => {
-        setInputStyle(inputStyle);
-    }
 
     const onWrapperClick = (event) => {
         if (!menuClick) {
