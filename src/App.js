@@ -52,6 +52,7 @@ import { Functions } from './util/Functions';
 import Categories from './components/Categories';
 import Articles from './components/Articles';
 import CategoryDetail from './components/CategoryDetail';
+import ArticleDetail from './components/ArticleDetail';
 
 const App = () => {
     const {t} = useTranslation()
@@ -382,6 +383,8 @@ const App = () => {
                         <Route path="/category/add" component={CategoryDetail}/>
                         <Route path="/category/edit/:id" component={CategoryDetail}/>
                         <Route path="/articles" component={Articles}/>
+                        <Route path="/article/add" component={ArticleDetail}/>
+                        <Route path="/article/edit/:id" component={ArticleDetail}/>
                         <Route path="/formlayout" component={FormLayoutDemo}/>
                         <Route path="/input" component={InputDemo}/>
                         <Route path="/floatlabel" component={FloatLabelDemo}/>

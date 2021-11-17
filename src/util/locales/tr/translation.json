@@ -12,7 +12,7 @@
     "add_category": "Kategori ekle",
     "articles": "Makaleler",
     "parent_category": "Üst kategori",
-    "select_category": "Bir kategori üst seçin. (İsteğe bağlı)",
+    "select_category": "Bir üst kategori seçin. (İsteğe bağlı)",
     "parent_category_description": "Bir kategori seçerseniz, bu kategori ona ait olacaktır.",
     "name": "İsim",
     "slug": "Uzantı",
@@ -29,5 +29,8 @@
     "no": "Hayır",
     "yes": "Evet",
     "no_records_found": "Kayıt bulunamadı",
-    "search": "Ara"
+    "search": "Ara",
+    "add_article": "Makale ekle",
+    "image": "Resim",
+    "drag_drop": "Resmi Buraya Sürükleyip Bırakın"
 }

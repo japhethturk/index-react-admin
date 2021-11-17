@@ -43,7 +43,7 @@ const CategoryDetail = (props) => {
 
     useEffect(() => {
         if (id === undefined) {
-            categoryService.allTree().then((response) => {
+            categoryService.allTree(langId).then((response) => {
                     if (response.status === "ok") {
                         setTreeOption([emptyItem, ...response.categories]);
                     } else if (response.status === "error") {
@@ -58,7 +58,7 @@ const CategoryDetail = (props) => {
                 });
         } else {
             setIsAdd(false);
-            categoryService.edit(id, appState.admin.token).then((response) => {
+            categoryService.edit(id, langId, appState.admin.token).then((response) => {
                     if (response.status === "ok") {
                         setTreeOption([emptyItem, ...response.categories]);
                         setSelectedParentKey(response.category.parent_id);
@@ -82,13 +82,14 @@ const CategoryDetail = (props) => {
                     setShowProgress(false);
                 });
         }
-    }, []);
+    }, [langId]);
 
     const onSubmit = (e) => {
         window.scrollTo(0, 0);
         setShowProgress(true);
         messages.current.clear();
         let requestBody = {
+            lang_id: langId,
             parent_id: selectedParentKey,
             name,
             slug,
@@ -96,7 +97,7 @@ const CategoryDetail = (props) => {
             meta_description: description,
         };
         if (isAdd) {
-            categoryService.store(requestBody, appState.admin.token).then((response) => {
+            categoryService.store(requestBody, langId, appState.admin.token).then((response) => {
                     if (response.status !== undefined) {
                         if (response.status === "ok") {
                             setTreeOption([emptyItem, ...response.categories]);
@@ -116,8 +117,7 @@ const CategoryDetail = (props) => {
                     setShowProgress(false);
                 });
         } else {
-            categoryService.update(id, requestBody, appState.admin.token)
-                .then((response) => {
+            categoryService.update(id, requestBody, appState.admin.token).then((response) => {
                     if (response.status !== undefined) {
                         messages.current.show([response.message]);
                     } else {

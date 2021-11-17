@@ -26,18 +26,11 @@ const Categories = (props) => {
     const dateFormat = require("dateformat");
 
 
-    const cardHeader = (
-        <div className="flex align-items-center justify-content-between mb-0 p-3 pb-0">
-            <h5 className="m-0">{t('categories')}</h5>
-            <SelectLanguage value={langId}  onChange={(e) => setLangId(e.value)}/>
-            <Button icon="pi pi-plus" className="p-button-text" onClick={(event) => history.push('/category/add')} />
-        </div>
-    );
 
     const categoryService = new CategoryService();
 
     useEffect(() => {
-        categoryService.allTable().then((response) => {
+        categoryService.allTable(langId).then((response) => {
                 if (response.status === "ok") {
                     setCategories(response.categories);
                 } else if (response.status === "error") {
@@ -47,8 +40,7 @@ const Categories = (props) => {
                 }
             })
             .catch((e) => {
-                console.log(e);
-                // messages.current.show([{severity: "error",summary: t("error"),detail: t("occurred_connecting_error"),sticky: true,},]);
+                messages.current.show([{severity: "error",summary: t("error"),detail: t("occurred_connecting_error"),sticky: true,},]);
             })
             .finally(() => {
                 setShowProgress(false);
@@ -75,9 +67,7 @@ const Categories = (props) => {
     const confirmDeleteRow = () => {
         messages.current.clear();
         setShowProgress(true);
-        categoryService
-            .remove(deleteRow.id, appState.admin.token)
-            .then((response) => {
+        categoryService.remove(deleteRow.id, langId, appState.admin.token).then((response) => {
                 if (response.status !== undefined) {
                     if (response.status === "ok") {
                         setCategories(response.categories);
@@ -123,6 +113,15 @@ const Categories = (props) => {
             </div>
         );
     };
+
+    
+    const cardHeader = (
+        <div className="flex align-items-center justify-content-between mb-0 p-3 pb-0">
+            <h5 className="m-0">{t('categories')}</h5>
+            <SelectLanguage value={langId}  onChange={(e) => setLangId(e.value)}/>
+            <Button icon="pi pi-plus" className="p-button-text" onClick={(e) => history.push('/category/add')} />
+        </div>
+    );
 
     return (
         <div className="grid">
