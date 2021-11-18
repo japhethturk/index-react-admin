@@ -44,7 +44,6 @@ const ArticleDetail = (props) => {
     const [showProgress, setShowProgress] = useState(true);
     const [totalSize, setTotalSize] = useState(0);
     const [file, setFile] = useState(null);
-    const [width, setWidth] = useState(350);
     const [maxSize, setMaxSize] = useState(2);
     const [langId, setLangId] = useState(appState.langId)
     const [editedImageName, setEditedImageName] = useState(null);
@@ -76,19 +75,19 @@ const ArticleDetail = (props) => {
             articleService.edit(id, langId, appState.admin.token).then((response) => {
                     if (response.status === "ok") {
                         setTreeOption(response.categories);
-                        setSelectedParentKey(response.post.category_id);
-                        setName(response.post.name);
-                        setSlug(response.post.slug);
-                        setPublish(parseInt(response.post.publish) === 1);
-                        if (response.post.content)
-                            setContent(response.post.content);
-                        if (response.post.meta_description)
-                            setDescription(response.post.meta_description);
-                        if (response.post.meta_keywords)
-                            setKeywords(response.post.meta_keywords.split(","));
-                        if (response.post.image) {
-                            setEditedImageName(response.post.image);
-                            editedImage(response.post.image);
+                        setSelectedParentKey(response.article.category_id);
+                        setName(response.article.name);
+                        setSlug(response.article.slug);
+                        setPublish(parseInt(response.article.publish) === 1);
+                        if (response.article.content)
+                            setContent(response.article.content);
+                        if (response.article.meta_description)
+                            setDescription(response.article.meta_description);
+                        if (response.article.meta_keywords)
+                            setKeywords(response.article.meta_keywords.split(","));
+                        if (response.article.image) {
+                            setEditedImageName(response.article.image);
+                            editedImage(response.article.image);
                         }
                     } else if (response.status === "error") {
                         messages.current.show([response.message]);
@@ -96,17 +95,19 @@ const ArticleDetail = (props) => {
                         messages.current.show([{severity: "error", summary: t("error"), detail: t("unexpected_response"), sticky: true,},]);
                     }
                 }).catch((e) => {
+                    console.log(e);
                     messages.current.show([{severity: "error", summary: t("error"), detail: t("occurred_connecting_error"), sticky: true, },]);
                 }).finally(() => {
                     setShowProgress(false);
                 });
         }
-    }, [id]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [langId]);
 
     const editedImage = (imageName) => {
         document.getElementById(
             "no-image"
-        ).innerHTML = `<img width="150" src="${window.option.storage}posts/${imageName}" alt="${imageName}">`;
+        ).innerHTML = `<img width="150" src="${process.env.REACT_APP_URL}images/articles/${imageName}" alt="${imageName}">`;
     };
 
     const onSubmit = (e) => {
@@ -144,6 +145,7 @@ const ArticleDetail = (props) => {
     const onSave = (imageName = editedImageName) => {
         messages.current.clear();
         let data = {
+            lang_id:langId,
             publish,
             name,
             slug,
@@ -155,7 +157,7 @@ const ArticleDetail = (props) => {
         };
 
         if (isAdd) {
-            articleService.store(data, appState.admin.token).then((response) => {
+            articleService.store(data, langId, appState.admin.token).then((response) => {
                     if (response.status !== undefined) {
                         if (response.status === "ok") {
                             setContent("");
@@ -202,7 +204,7 @@ const ArticleDetail = (props) => {
         removeLastImage();
     };
 
-    const setEditPostImage = () => {
+    const setEditArticleImage = () => {
         if (!isAdd && editedImageName !== null) {
             setTimeout(function () {
                 editedImage(editedImageName);
@@ -222,23 +224,20 @@ const ArticleDetail = (props) => {
     const onTemplateRemove = (file, callback) => {
         setTotalSize(totalSize - file.size);
         callback();
-        setEditPostImage();
+        setEditArticleImage();
         setFile(null);
     };
 
     const onTemplateClear = () => {
         setTotalSize(0);
-        setEditPostImage();
+        setEditArticleImage();
         setFile(null);
     };
 
     const headerTemplate = (options) => {
         const {className, chooseButton, cancelButton} = options;
         const value = totalSize / 10000;
-        const formatValue =
-            fileUploadRef && fileUploadRef.current
-                ? fileUploadRef.current.formatSize(totalSize)
-                : "0 B";
+        const formatValue = fileUploadRef && fileUploadRef.current  ? fileUploadRef.current.formatSize(totalSize) : "0 B";
 
         return (
             <div
@@ -269,7 +268,7 @@ const ArticleDetail = (props) => {
     const itemTemplate = (file, props) => {
         return (
             <div className="p-d-flex p-ai-center p-flex-wrap">
-                <div className="p-d-flex p-ai-center" style={{width: "40%"}}>
+                <div className="p-d-flex p-ai-center">
                     <img
                         alt={file.name}
                         role="presentation"
@@ -298,8 +297,8 @@ const ArticleDetail = (props) => {
 
     const emptyTemplate = () => {
         return (
-            <div class="grid">
-                <div class="col-6 col-offset-3" style={{textAlign:"center"}}>
+            <div className="grid">
+                <div className="col-6 col-offset-3" style={{textAlign:"center"}}>
                 <div id="no-image">
                     <i
                         className="pi pi-image p-mt-3 p-p-5"
@@ -322,9 +321,6 @@ const ArticleDetail = (props) => {
                 </span>
                 </div>
             </div>
-            // <div className="p-d-flex p-ai-center p-dir-col">
-                
-            // </div>
         );
     };
 
@@ -346,7 +342,7 @@ const ArticleDetail = (props) => {
         <div className="flex align-items-center justify-content-between mb-0 p-3 pb-0">
             <div className="flex align-items-center justify-content-between">
                 <Button icon="pi pi-arrow-left" className="p-button-text" onClick={(event) => history.goBack()} />
-                <h5 className="m-0">{t('add_article')}</h5>
+                <h5 className="m-0">{t('articles')}</h5>
             </div>
             <SelectLanguage value={langId}  onChange={(e) => setLangId(e.value)}/>
         </div>
@@ -359,7 +355,7 @@ const ArticleDetail = (props) => {
                 <Card header={cardHeader}>
                 <div
                     className="p-fluid b-form"
-                    style={{width: appState.isMobile ? width : "100%"}}
+                    style={{width:"100%"}}
                 >
                     {showProgress ? (
                         <ProgressBar
@@ -469,7 +465,7 @@ const ArticleDetail = (props) => {
                             editor={ClassicEditor}
                             config={{
                                 ckfinder: {
-                                    uploadUrl: `${process.env.REACT_APP_API}post/uploadCk`,
+                                    uploadUrl: `${process.env.REACT_APP_API}article/uploadCk`,
                                 },
                             }}
                             data={content}

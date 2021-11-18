@@ -1,11 +1,11 @@
-import React, {useEffect, useRef, useState, useContext, useReducer} from "react";
+import React, {useEffect, useRef, useState, useContext} from "react";
 import { Button } from "primereact/button";
 import { Card } from "primereact/card";
 import { useTranslation } from "react-i18next";
 import {TreeTable} from "primereact/treetable";
 import {Column} from "primereact/column";
 import {Messages} from "primereact/messages";
-import {Link, useHistory} from "react-router-dom";
+import {useHistory} from "react-router-dom";
 import {InputText} from "primereact/inputtext";
 import {Dialog} from "primereact/dialog";
 import StateContext from "../util/context/StateContext";
@@ -45,7 +45,8 @@ const Categories = (props) => {
             .finally(() => {
                 setShowProgress(false);
             });
-    }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [langId]);
 
 
     const getHeader = () => {
@@ -109,7 +110,7 @@ const Categories = (props) => {
                     () => setDeleteRow(node.data)}
                     disabled={node.children.length !== 0
                     }
-                style={{marginLeft:5}}/>
+                style={{marginLeft:5}} />
             </div>
         );
     };
@@ -160,9 +161,9 @@ const Categories = (props) => {
                         headerClassName="sm-invisible" bodyClassName="sm-invisible" sortable
                     />
                     <Column
-                        field="public" header={t("public")}
+                        field="publish" header={t("publish")}
                         body={(node) => 
-                            parseInt(node.data.public) === 1 ? (
+                            parseInt(node.data.publish) === 1 ? (
                                 <i
                                     style={{color: "#689f38"}}
                                     className="pi pi-check"

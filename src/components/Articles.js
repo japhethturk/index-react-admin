@@ -31,7 +31,7 @@ const Articles = (props) => {
     const [langId, setLangId] = useState(appState.langId)
 
     const [totalRecords, setTotalRecords] = useState(0);
-    const [posts, setPosts] = useState([]);
+    const [articles, setArticles] = useState([]);
 
     const [lazyParams, setLazyParams] = useState({
         first: 0,
@@ -61,6 +61,18 @@ const Articles = (props) => {
             }).catch((e) => {
                 messages.current.show([{severity: "error", summary: t("error"), detail: t("occurred_connecting_error"), sticky: true,},]);
             });
+
+            if (lazyParams.loaded) {
+                setLazyParams((oldValue) => {
+                    return {
+                        langId,
+                        rows: oldValue.rows,
+                        first: oldValue.first,
+                        loaded: true,
+                    };
+                });
+            }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [langId]);
 
     useEffect(() => {
@@ -74,21 +86,23 @@ const Articles = (props) => {
         }
         setLazyParams((oldValue) => {
             return {
+                langId,
                 rows: oldValue.rows,
                 first: lazyFirst,
                 loaded: true,
             };
         });
+// eslint-disable-next-line react-hooks/exhaustive-deps
     }, [page]);
 
     useEffect(() => {
         if (lazyParams.loaded) {
             setShowProgress(true);
-            articleService.paginate(lazyParams, langId, appState.admin.token).then((response) => {
+            articleService.paginate(lazyParams, appState.admin.token).then((response) => {
                     if (response.status !== undefined) {
                         if (response.status === "ok") {
                             setTotalRecords(response.paginate.total);
-                            setPosts(response.paginate.data);
+                            setArticles(response.paginate.data);
                         } else {
                             messages.current.show([response.message]);
                         }
@@ -115,7 +129,8 @@ const Articles = (props) => {
                     setShowProgress(false);
                 });
         }
-    }, [lazyParams, langId]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [lazyParams]);
 
 
     
@@ -127,10 +142,10 @@ const Articles = (props) => {
             .then((response) => {
                 if (response.status !== undefined) {
                     if (response.status === "ok") {
-                        let unRemoved = posts.filter(function (item) {
+                        let unRemoved = articles.filter(function (item) {
                             return item.id !== deleteRow.id;
                         });
-                        setPosts(unRemoved);
+                        setArticles(unRemoved);
                     }
                     messages.current.show([response.message]);
                 } else {
@@ -190,9 +205,9 @@ const Articles = (props) => {
 
         window.scrollTo(0, 0);
         if (event.page === 0) {
-            history.push(`${window.option.admin}post/all`);
+            history.push(`article/all`);
         } else {
-            history.push(`${window.option.admin}post/all/${event.page + 1}`);
+            history.push(`article/all/${event.page + 1}`);
         }
     };
 
@@ -211,8 +226,8 @@ const Articles = (props) => {
         return (
             <React.Fragment>
                 <img
-                    src={`${window.option.storage}posts/${rowData.image}`}
-                    onError={(e) => (e.target.src = window.option.error_image)}
+                    src={`${process.env.REACT_APP_URL}images/articles/${rowData.image}`}
+                    onError={(e) => (e.target.src = `${process.env.REACT_APP_URL}images/not_image.png`)}
                     alt={rowData.name}
                     style={{width: 100, height: 70, objectFit: "cover"}}
                 />
@@ -256,7 +271,7 @@ const Articles = (props) => {
                 icon: "pi pi-external-link",
                 command: () => {
                     let win = window.open(
-                        `${window.root}post/${rowData.slug}`,
+                        `${window.root}article/${rowData.slug}`,
                         "_blank"
                     );
                     win.focus();
@@ -288,7 +303,7 @@ const Articles = (props) => {
                     icon="pi pi-pencil"
                     onClick={() =>
                         history.push(
-                            `${window.option.admin}post/edit/${rowData.id}`
+                            `article/edit/${rowData.id}`
                         )
                     }
                     model={operationItem(rowData)}
@@ -359,7 +374,7 @@ const Articles = (props) => {
             <div className="datatable-responsive">
                 <DataTable
                     ref={dt}
-                    value={posts}
+                    value={articles}
                     lazy
                     className="p-datatable-responsive p-datatable-sm"
                     resizableColumns

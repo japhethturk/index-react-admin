@@ -53,14 +53,20 @@ import Categories from './components/Categories';
 import Articles from './components/Articles';
 import CategoryDetail from './components/CategoryDetail';
 import ArticleDetail from './components/ArticleDetail';
+import { Hadithes } from './components/Hadithes';
+import { HadithDetail } from './components/HadithDetail';
 
 const App = () => {
     const {t} = useTranslation()
 
-    const [layoutMode, setLayoutMode] = useState('static')
-    const [layoutColorMode, setLayoutColorMode] = useState('light')
-    const [inputStyle, setInputStyle] = useState('outlined')
-    const [ripple, setRipple] = useState(true)
+    // const [layoutMode, setLayoutMode] = useState('static')
+    // const [layoutColorMode, setLayoutColorMode] = useState('light')
+    // const [inputStyle, setInputStyle] = useState('outlined')
+    // const [ripple, setRipple] = useState(true)
+    const layoutMode = 'static'
+    const layoutColorMode = 'light'
+    const inputStyle = 'outlined'
+    const ripple = true
     const [staticMenuInactive, setStaticMenuInactive] = useState(false)
     const [overlayMenuActive, setOverlayMenuActive] = useState(false)
     const [mobileMenuActive, setMobileMenuActive] = useState(false)
@@ -145,6 +151,7 @@ const App = () => {
         return () => {
             isMounted = false;
         };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
 
@@ -165,6 +172,7 @@ const App = () => {
             Cookies.remove("ADMIN_MAIL");
             Cookies.remove("ADMIN_PASSWORD");
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [state.adminLoggedIn])
 
     useEffect(() => {
@@ -249,7 +257,8 @@ const App = () => {
             items: [
                 {label: t('dashboard'), icon: 'pi pi-fw pi-home', to: '/'},
                 {label: t('categories'), icon: 'pi pi-fw pi-sitemap', to: '/categories'},
-                {label: t('articles'), icon: 'pi pi-fw pi-pencil', to: '/articles'}
+                {label: t('articles'), icon: 'pi pi-fw pi-pencil', to: '/articles'},
+                {label: t('hadithes'), icon: 'pi pi-fw pi-comment', to: '/hadithes'}
             ]
         },
         {
@@ -385,6 +394,9 @@ const App = () => {
                         <Route path="/articles" component={Articles}/>
                         <Route path="/article/add" component={ArticleDetail}/>
                         <Route path="/article/edit/:id" component={ArticleDetail}/>
+                        <Route path="/hadithes" component={Hadithes}/>
+                        <Route path="/hadith/add" component={HadithDetail}/>
+                        <Route path="/hadith/edit/:id" component={HadithDetail}/>
                         <Route path="/formlayout" component={FormLayoutDemo}/>
                         <Route path="/input" component={InputDemo}/>
                         <Route path="/floatlabel" component={FloatLabelDemo}/>

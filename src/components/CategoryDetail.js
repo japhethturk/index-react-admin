@@ -12,7 +12,6 @@ import { TreeSelect } from 'primereact/treeselect';
 import {InputTextarea} from "primereact/inputtextarea";
 import StateContext from "../util/context/StateContext";
 import slugify from "react-slugify";
-import {Checkbox} from "primereact/checkbox";
 import { Functions } from "../util/Functions";
 import { CategoryService } from "../service/CategoryService";
 import { Chips } from "primereact/chips";
@@ -82,6 +81,7 @@ const CategoryDetail = (props) => {
                     setShowProgress(false);
                 });
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [langId]);
 
     const onSubmit = (e) => {
@@ -144,7 +144,7 @@ const CategoryDetail = (props) => {
         <div className="flex align-items-center justify-content-between mb-0 p-3 pb-0">
             <div className="flex align-items-center justify-content-between">
                 <Button icon="pi pi-arrow-left" className="p-button-text" onClick={(event) => history.goBack()} />
-                <h5 className="m-0">{t('add_category')}</h5>
+                <h5 className="m-0">{t('categories')}</h5>
             </div>
             <SelectLanguage value={langId}  onChange={(e) => setLangId(e.value)}/>
         </div>

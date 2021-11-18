@@ -3,8 +3,8 @@ import { Functions } from '../util/Functions';
 
 export class ArticleService {
     
-    paginate(lazyParams, langId, token) {
-        return axios.get(`${process.env.REACT_APP_API}post/paginate/${langId}`, {
+    paginate(lazyParams, token) {
+        return axios.get(`${process.env.REACT_APP_API}post/paginate`, {
                 headers: Functions.axiosJsonTokenHeader(token).headers,
                 params: lazyParams,}).then((res) => res.data);
     }
