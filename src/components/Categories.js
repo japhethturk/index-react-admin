@@ -138,10 +138,7 @@ const Categories = (props) => {
                 onHide={() => onHideDialog()}
             >
                 <p>
-                    {t("confirmation_delete").replaceAll(
-                        ":attribute",
-                        deleteRow.name
-                    )}
+                    {t("confirmation_delete").replaceAll(":attribute", deleteRow.name)}
                 </p>
             </Dialog>
 

@@ -24,7 +24,7 @@
     "publish": "Görünür",
     "operation": "",
     "confirmation" :"Onayla",
-    "confirmation_delete": "\":attribute\"silmek istediğinizden emin misiniz?",
+    "confirmation_delete": "\":attribute\" silmek istediğinizden emin misiniz?",
     "no": "Hayır",
     "yes": "Evet",
     "no_records_found": "Kayıt bulunamadı",
