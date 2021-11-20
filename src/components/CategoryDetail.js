@@ -23,6 +23,7 @@ const CategoryDetail = (props) => {
     const {t} = useTranslation()
     const {id} = useParams();
     const messages = useRef(null);
+    const [showProgress, setShowProgress] = useState(true);
     const appState = useContext(StateContext);
     const [isAdd, setIsAdd] = useState(true);
     const [name, setName] = useState("");
@@ -32,7 +33,6 @@ const CategoryDetail = (props) => {
     const [changeSlug, setChangeSlug] = useState(true);
     const [treeOption, setTreeOption] = useState([]);
     const [selectedParentKey, setSelectedParentKey] = useState(null);
-    const [showProgress, setShowProgress] = useState(true);
     const [langId, setLangId] = useState(appState.langId)
 
 

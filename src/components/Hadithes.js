@@ -25,8 +25,7 @@ export const Hadithes = () => {
         <div className="grid">
             <div className="col-12">
             <Card header={cardHeader}>
-                
-                    <p>Use this page to start from scratch and place your custom content.</p>
+                <p>Use this page to start from scratch and place your custom content.</p>
             </Card>
             </div>
         </div>
