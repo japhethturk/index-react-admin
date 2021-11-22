@@ -1,7 +1,7 @@
 import React from 'react';
-import { Button } from 'primereact/button';
-import { Card } from 'primereact/card';
-import { Timeline } from 'primereact/timeline';
+import {Button} from 'primereact/button';
+import {Card} from 'primereact/card';
+import {Timeline} from 'primereact/timeline';
 import classNames from 'classnames';
 
 export const TimelineDemo = () => {
@@ -14,9 +14,9 @@ export const TimelineDemo = () => {
             color: '#9C27B0',
             image: 'game-controller.jpg'
         },
-        { status: 'Processing', date: '15/10/2020 14:00', icon: 'pi pi-cog', color: '#673AB7' },
-        { status: 'Shipped', date: '15/10/2020 16:15', icon: 'pi pi-envelope', color: '#FF9800' },
-        { status: 'Delivered', date: '16/10/2020 10:00', icon: 'pi pi-check', color: '#607D8B' }
+        {status: 'Processing', date: '15/10/2020 14:00', icon: 'pi pi-cog', color: '#673AB7'},
+        {status: 'Shipped', date: '15/10/2020 16:15', icon: 'pi pi-envelope', color: '#FF9800'},
+        {status: 'Delivered', date: '16/10/2020 10:00', icon: 'pi pi-check', color: '#607D8B'}
     ];
 
     const horizontalEvents = [
@@ -27,9 +27,9 @@ export const TimelineDemo = () => {
     const customizedContent = (item) => {
         return (
             <Card title={item.status} subTitle={item.date}>
-                { item.image && <img src={`assets/demo/images/product/${item.image}`} onError={(e) => e.target.src = 'https://www.primefaces.org/wp-content/uploads/2020/05/placeholder.png'} alt={item.name} width={200} className="p-shadow-2" />}
+                {item.image && <img src={`assets/demo/images/product/${item.image}`} onError={(e) => e.target.src = 'https://www.primefaces.org/wp-content/uploads/2020/05/placeholder.png'} alt={item.name} width={200} className="p-shadow-2"/>}
                 <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Inventore sed consequuntur error repudiandae numquam deserunt
-                quisquam repellat libero asperiores earum nam nobis, culpa ratione quam perferendis esse, cupiditate neque quas!</p>
+                    quisquam repellat libero asperiores earum nam nobis, culpa ratione quam perferendis esse, cupiditate neque quas!</p>
                 <Button label="Read more" className="p-button-text"></Button>
             </Card>
         );
@@ -37,7 +37,7 @@ export const TimelineDemo = () => {
 
     const customizedMarker = (item) => {
         return (
-            <span className="custom-marker p-shadow-2" style={{ backgroundColor: item.color }}>
+            <span className="custom-marker p-shadow-2" style={{backgroundColor: item.color}}>
                 <i className={classNames('marker-icon', item.icon)}></i>
             </span>
         );
@@ -49,10 +49,10 @@ export const TimelineDemo = () => {
                 <h4>Timeline</h4>
 
                 <h5>Custom Timeline</h5>
-                <Timeline value={customEvents} align="alternate" className="customized-timeline" marker={customizedMarker} content={customizedContent} />
+                <Timeline value={customEvents} align="alternate" className="customized-timeline" marker={customizedMarker} content={customizedContent}/>
 
-                <h5 style={{ marginTop: '5em' }}>Horizontal - Alternate Align</h5>
-                <Timeline value={horizontalEvents} layout="horizontal" align="alternate" content={(item) => item} opposite={<span>&nbsp;</span>} />
+                <h5 style={{marginTop: '5em'}}>Horizontal - Alternate Align</h5>
+                <Timeline value={horizontalEvents} layout="horizontal" align="alternate" content={(item) => item} opposite={<span>&nbsp;</span>}/>
             </div>
         </div>
     </div>

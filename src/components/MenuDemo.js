@@ -1,15 +1,15 @@
-import React, { useRef } from 'react';
-import { Menubar } from 'primereact/menubar';
-import { InputText } from 'primereact/inputtext';
-import { BreadCrumb } from 'primereact/breadcrumb';
-import { Steps } from 'primereact/steps';
-import { TabMenu } from 'primereact/tabmenu';
-import { TieredMenu } from 'primereact/tieredmenu';
-import { Menu } from 'primereact/menu';
-import { Button } from 'primereact/button';
-import { ContextMenu } from 'primereact/contextmenu';
-import { MegaMenu } from 'primereact/megamenu';
-import { PanelMenu } from 'primereact/panelmenu';
+import React, {useRef} from 'react';
+import {Menubar} from 'primereact/menubar';
+import {InputText} from 'primereact/inputtext';
+import {BreadCrumb} from 'primereact/breadcrumb';
+import {Steps} from 'primereact/steps';
+import {TabMenu} from 'primereact/tabmenu';
+import {TieredMenu} from 'primereact/tieredmenu';
+import {Menu} from 'primereact/menu';
+import {Button} from 'primereact/button';
+import {ContextMenu} from 'primereact/contextmenu';
+import {MegaMenu} from 'primereact/megamenu';
+import {PanelMenu} from 'primereact/panelmenu';
 
 
 export const MenuDemo = () => {
@@ -98,20 +98,20 @@ export const MenuDemo = () => {
         }
     ];
 
-    const breadcrumbHome = { icon: 'pi pi-home', to: '/' };
+    const breadcrumbHome = {icon: 'pi pi-home', to: '/'};
     const breadcrumbItems = [
-        { label: 'Computer' },
-        { label: 'Notebook' },
-        { label: 'Accessories' },
-        { label: 'Backpacks' },
-        { label: 'Item' }
+        {label: 'Computer'},
+        {label: 'Notebook'},
+        {label: 'Accessories'},
+        {label: 'Backpacks'},
+        {label: 'Item'}
     ];
 
     const wizardItems = [
-        { label: 'Personal' },
-        { label: 'Seat' },
-        { label: 'Payment' },
-        { label: 'Confirmation' }
+        {label: 'Personal'},
+        {label: 'Seat'},
+        {label: 'Payment'},
+        {label: 'Confirmation'}
     ];
 
     const tieredMenuItems = [
@@ -276,21 +276,21 @@ export const MenuDemo = () => {
                 [
                     {
                         label: 'Woman',
-                        items: [{ label: 'Woman Item' }, { label: 'Woman Item' }, { label: 'Woman Item' }]
+                        items: [{label: 'Woman Item'}, {label: 'Woman Item'}, {label: 'Woman Item'}]
                     },
                     {
                         label: 'Men',
-                        items: [{ label: 'Men Item' }, { label: 'Men Item' }, { label: 'Men Item' }]
+                        items: [{label: 'Men Item'}, {label: 'Men Item'}, {label: 'Men Item'}]
                     }
                 ],
                 [
                     {
                         label: 'Kids',
-                        items: [{ label: 'Kids Item' }, { label: 'Kids Item' }]
+                        items: [{label: 'Kids Item'}, {label: 'Kids Item'}]
                     },
                     {
                         label: 'Luggage',
-                        items: [{ label: 'Luggage Item' }, { label: 'Luggage Item' }, { label: 'Luggage Item' }]
+                        items: [{label: 'Luggage Item'}, {label: 'Luggage Item'}, {label: 'Luggage Item'}]
                     }
                 ]
             ]
@@ -301,27 +301,27 @@ export const MenuDemo = () => {
                 [
                     {
                         label: 'Computer',
-                        items: [{ label: 'Computer Item' }, { label: 'Computer Item' }]
+                        items: [{label: 'Computer Item'}, {label: 'Computer Item'}]
                     },
                     {
                         label: 'Camcorder',
-                        items: [{ label: 'Camcorder Item' }, { label: 'Camcorder Item' }, { label: 'Camcorder Item' },]
+                        items: [{label: 'Camcorder Item'}, {label: 'Camcorder Item'}, {label: 'Camcorder Item'},]
                     },
                 ],
                 [
                     {
                         label: 'TV',
-                        items: [{ label: 'TV Item' }, { label: 'TV Item' }]
+                        items: [{label: 'TV Item'}, {label: 'TV Item'}]
                     },
                     {
                         label: 'Audio',
-                        items: [{ label: 'Audio Item' }, { label: 'Audio Item' }, { label: 'Audio Item' }]
+                        items: [{label: 'Audio Item'}, {label: 'Audio Item'}, {label: 'Audio Item'}]
                     }
                 ],
                 [
                     {
                         label: 'Sports.7',
-                        items: [{ label: 'Sports.7.1' }, { label: 'Sports.7.2' }]
+                        items: [{label: 'Sports.7.1'}, {label: 'Sports.7.2'}]
                     }
                 ]
             ]
@@ -332,21 +332,21 @@ export const MenuDemo = () => {
                 [
                     {
                         label: 'Living Room',
-                        items: [{ label: 'Living Room Item' }, { label: 'Living Room Item' },]
+                        items: [{label: 'Living Room Item'}, {label: 'Living Room Item'},]
                     },
                     {
                         label: 'Kitchen',
-                        items: [{ label: 'Kitchen Item' }, { label: 'Kitchen Item' }, { label: 'Kitchen Item' }]
+                        items: [{label: 'Kitchen Item'}, {label: 'Kitchen Item'}, {label: 'Kitchen Item'}]
                     }
                 ],
                 [
                     {
                         label: 'Bedroom',
-                        items: [{ label: 'Bedroom Item' }, { label: 'Bedroom Item' }]
+                        items: [{label: 'Bedroom Item'}, {label: 'Bedroom Item'}]
                     },
                     {
                         label: 'Outdoor',
-                        items: [{ label: 'Outdoor Item' }, { label: 'Outdoor Item' }, { label: 'Outdoor Item' }]
+                        items: [{label: 'Outdoor Item'}, {label: 'Outdoor Item'}, {label: 'Outdoor Item'}]
                     }
                 ]
             ]
@@ -357,17 +357,17 @@ export const MenuDemo = () => {
                 [
                     {
                         label: 'Basketball',
-                        items: [{ label: 'Basketball Item' }, { label: 'Basketball Item' }]
+                        items: [{label: 'Basketball Item'}, {label: 'Basketball Item'}]
                     },
                     {
                         label: 'Football',
-                        items: [{ label: 'Football Item' }, { label: 'Football Item' }, { label: 'Football Item' }]
+                        items: [{label: 'Football Item'}, {label: 'Football Item'}, {label: 'Football Item'}]
                     }
                 ],
                 [
                     {
                         label: 'Tennis',
-                        items: [{ label: 'Tennis Item' }, { label: 'Tennis Item' }]
+                        items: [{label: 'Tennis Item'}, {label: 'Tennis Item'}]
                     }
                 ]
             ]
@@ -461,8 +461,8 @@ export const MenuDemo = () => {
     const menubarEndTemplate = () => {
         return (
             <span className="p-input-icon-left">
-                <i className="pi pi-search" />
-                <InputText type="text" placeholder="Search" />
+                <i className="pi pi-search"/>
+                <InputText type="text" placeholder="Search"/>
             </span>
         );
     };
@@ -479,35 +479,35 @@ export const MenuDemo = () => {
             <div className="col-12">
                 <div className="card card-w-title">
                     <h5>Breadcrumb</h5>
-                    <BreadCrumb home={breadcrumbHome} model={breadcrumbItems} />
+                    <BreadCrumb home={breadcrumbHome} model={breadcrumbItems}/>
                 </div>
             </div>
 
             <div className="col-12 md:col-6">
                 <div className="card card-w-title">
                     <h5>Steps</h5>
-                    <Steps model={wizardItems} readonly={false} />
+                    <Steps model={wizardItems} readonly={false}/>
                 </div>
             </div>
 
             <div className="col-12 md:col-6">
                 <div className="card card-w-title">
                     <h5>TabMenu</h5>
-                    <TabMenu model={wizardItems} />
+                    <TabMenu model={wizardItems}/>
                 </div>
             </div>
 
             <div className="col-12 md:col-4">
                 <div className="card">
                     <h5>Tiered Menu</h5>
-                    <TieredMenu model={tieredMenuItems} />
+                    <TieredMenu model={tieredMenuItems}/>
                 </div>
             </div>
 
             <div className="col-12 md:col-4">
                 <div className="card">
                     <h5>Plain Menu</h5>
-                    <Menu model={menuitems} />
+                    <Menu model={menuitems}/>
                 </div>
             </div>
 
@@ -515,31 +515,31 @@ export const MenuDemo = () => {
                 <div className="card">
                     <h5>Overlay Menu</h5>
 
-                    <Menu ref={menu} model={overlayMenuItems} popup />
-                    <Button type="button" label="Options" icon="pi pi-angle-down" onClick={toggleMenu} style={{ width: 'auto' }} />
+                    <Menu ref={menu} model={overlayMenuItems} popup/>
+                    <Button type="button" label="Options" icon="pi pi-angle-down" onClick={toggleMenu} style={{width: 'auto'}}/>
                 </div>
 
                 <div className="card" onContextMenu={onContextRightClick}>
                     <h5>ContextMenu</h5>
                     Right click to display.
-                    <ContextMenu ref={contextMenu} model={contextMenuItems} />
+                    <ContextMenu ref={contextMenu} model={contextMenuItems}/>
                 </div>
             </div>
 
             <div className="col-12 md:col-6">
                 <div className="card">
                     <h5>MegaMenu - Horizontal</h5>
-                    <MegaMenu model={megamenuItems} />
+                    <MegaMenu model={megamenuItems}/>
 
-                    <h5 style={{ marginTop: '1.55em' }}>MegaMenu - Vertical</h5>
-                    <MegaMenu model={megamenuItems} orientation="vertical" />
+                    <h5 style={{marginTop: '1.55em'}}>MegaMenu - Vertical</h5>
+                    <MegaMenu model={megamenuItems} orientation="vertical"/>
                 </div>
             </div>
 
             <div className="col-12 md:col-6">
                 <div className="card">
                     <h5>PanelMenu</h5>
-                    <PanelMenu model={panelMenuitems} />
+                    <PanelMenu model={panelMenuitems}/>
                 </div>
             </div>
         </div>

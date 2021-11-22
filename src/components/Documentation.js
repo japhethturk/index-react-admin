@@ -1,5 +1,5 @@
 import React from 'react';
-import { CodeHighlight } from './CodeHighlight';
+import {CodeHighlight} from './CodeHighlight';
 
 export const Documentation = () => {
 
@@ -12,43 +12,43 @@ export const Documentation = () => {
 
                     <h5>Getting Started</h5>
                     <p>Sakai is an application template for React based on the popular <a href="https://github.com/facebook/create-react-app">create-react-app</a> that allows
-                            creating React apps with no configuration. To get started, clone the <a href="https://github.com/primefaces/sakai-react">repository</a> from GitHub and install the dependencies with npm or yarn.</p>
-<CodeHighlight>
-{`
+                        creating React apps with no configuration. To get started, clone the <a href="https://github.com/primefaces/sakai-react">repository</a> from GitHub and install the dependencies with npm or yarn.</p>
+                    <CodeHighlight>
+                        {`
 "npm install" or "yarn"
 `}
-</CodeHighlight>
+                    </CodeHighlight>
 
                     <p>Next step is running the application using the start script and navigate to <b>http://localhost:3000/</b> to view the application.
-                            That is it, you may now start with the development of your application using the Sakai template.</p>
+                        That is it, you may now start with the development of your application using the Sakai template.</p>
 
-<CodeHighlight>
-{`
+                    <CodeHighlight>
+                        {`
 "npm start" or "yarn start"
 `}
-</CodeHighlight>
+                    </CodeHighlight>
 
                     <h5>React Scripts</h5>
                     <p>Following commands are derived from create-app-app.</p>
-<CodeHighlight>
-{`
+                    <CodeHighlight>
+                        {`
 "npm start" or "yarn start": Starts the development server
 "npm test" or "yarn test": Runs the tests.
 "npm run build" or "yarn run build": Creates a production build.
 `}
-</CodeHighlight>
+                    </CodeHighlight>
 
                     <h5>Structure</h5>
                     <p>Sakai consists of 2 main parts; the application layout and the resources. <b>App.js</b> inside src folder is the main component containing the template for the base layout
-                            whereas required resources such as SASS structure for the layout are placed inside the <b>src/layout</b> folder.</p>
+                        whereas required resources such as SASS structure for the layout are placed inside the <b>src/layout</b> folder.</p>
 
                     <h5>Template</h5>
                     <p>Main layout is the JSX template of the App.js, it is divided into a couple of child components such as topbar, profile, menu and footer. Here is render method of the
-                    App.js component that implements the logic such as menu state, layout modes and so on.
-                        </p>
+                        App.js component that implements the logic such as menu state, layout modes and so on.
+                    </p>
 
-<CodeHighlight>
-{`
+                    <CodeHighlight>
+                        {`
 <div className={wrapperClass} onClick={onWrapperClick}>
     <AppTopbar onToggleMenuClick={onToggleMenuClick} layoutColorMode={layoutColorMode}
                mobileTopbarMenuActive={mobileTopbarMenuActive} onMobileTopbarMenuClick={onMobileTopbarMenuClick} onMobileSubTopbarMenuClick={onMobileSubTopbarMenuClick}/>
@@ -93,15 +93,15 @@ export const Documentation = () => {
 
 </div>
 `}
-</CodeHighlight>
+                    </CodeHighlight>
 
                     <h5>Menu</h5>
                     <p>Menu is a separate component defined in AppMenu.js file based on PrimeReact MenuModel API. In order to define the menuitems,
-                    navigate to createMenu() method App.js file and define your own model as a nested structure. Here is the menu component from the demo application.
-                            Notice that menu object is bound to the model property of AppMenu component as shown above.</p>
+                        navigate to createMenu() method App.js file and define your own model as a nested structure. Here is the menu component from the demo application.
+                        Notice that menu object is bound to the model property of AppMenu component as shown above.</p>
 
-<CodeHighlight lang="js">
-{`
+                    <CodeHighlight lang="js">
+                        {`
 const menu = [
     { label: 'Dashboard', icon: 'pi pi-fw pi-home', to: '/' },
     {
@@ -181,37 +181,37 @@ const menu = [
 ];
 
 `}
-</CodeHighlight>
+                    </CodeHighlight>
 
                     <p>Dependencies of Sakai are listed below and needs to be added to package.json. Only required
-                            dependency is PrimeReact where optional dependencies exist to enable certain components in PrimeReact.</p>
+                        dependency is PrimeReact where optional dependencies exist to enable certain components in PrimeReact.</p>
 
-<CodeHighlight lang="js">
-{`
+                    <CodeHighlight lang="js">
+                        {`
 "primereact": "...",                //required: PrimeReact components
 "primeicons": "...",                  //required: Icons
 "primeflex": "..."
 `}
-</CodeHighlight>
+                    </CodeHighlight>
 
                     <h5>PrimeReact Theme</h5>
                     <p>Sakai uses the free Saga, Arya and Vela themes which are distributed within PrimeReact, however it can be used with any PrimeReact theme as well such as material, tailwind and bootstrap.</p>
 
                     <h5>SASS Variables</h5>
                     <p>In case you'd like to customize the layout variables, open _variables.scss file under src/layout folder. Saving the changes
-                    will be reflected instantly at your browser.
-                        </p>
+                        will be reflected instantly at your browser.
+                    </p>
 
                     <h5>src/layout/_variables.scss</h5>
-<CodeHighlight lang="scss">
-{`
+                    <CodeHighlight lang="scss">
+                        {`
 /* General */
 $fontSize:1rem;
 $borderRadius:12px;
 $transitionDuration:.2s;
 $maskBg:rgba(0, 0, 0, 0.4);
 `}
-</CodeHighlight>
+                    </CodeHighlight>
                 </div>
             </div>
         </div>

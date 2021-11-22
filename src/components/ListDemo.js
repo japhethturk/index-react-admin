@@ -1,22 +1,22 @@
-import React, { useState, useEffect } from 'react';
-import { DataView, DataViewLayoutOptions } from 'primereact/dataview';
-import { Button } from 'primereact/button';
-import { Dropdown } from 'primereact/dropdown';
-import { Rating } from 'primereact/rating';
-import { PickList } from 'primereact/picklist';
-import { OrderList } from 'primereact/orderlist';
-import { ProductService } from '../service/ProductService';
+import React, {useEffect, useState} from 'react';
+import {DataView, DataViewLayoutOptions} from 'primereact/dataview';
+import {Button} from 'primereact/button';
+import {Dropdown} from 'primereact/dropdown';
+import {Rating} from 'primereact/rating';
+import {PickList} from 'primereact/picklist';
+import {OrderList} from 'primereact/orderlist';
+import {ProductService} from '../service/ProductService';
 
 export const ListDemo = () => {
 
     const listValue = [
-        { name: 'San Francisco', code: 'SF' },
-        { name: 'London', code: 'LDN' },
-        { name: 'Paris', code: 'PRS' },
-        { name: 'Istanbul', code: 'IST' },
-        { name: 'Berlin', code: 'BRL' },
-        { name: 'Barcelona', code: 'BRC' },
-        { name: 'Rome', code: 'RM' },
+        {name: 'San Francisco', code: 'SF'},
+        {name: 'London', code: 'LDN'},
+        {name: 'Paris', code: 'PRS'},
+        {name: 'Istanbul', code: 'IST'},
+        {name: 'Berlin', code: 'BRL'},
+        {name: 'Barcelona', code: 'BRC'},
+        {name: 'Rome', code: 'RM'},
     ];
 
     const [picklistSourceValue, setPicklistSourceValue] = useState(listValue);
@@ -29,8 +29,8 @@ export const ListDemo = () => {
     const [sortField, setSortField] = useState(null);
 
     const sortOptions = [
-        { label: 'Price High to Low', value: '!price' },
-        { label: 'Price Low to High', value: 'price' }
+        {label: 'Price High to Low', value: '!price'},
+        {label: 'Price Low to High', value: 'price'}
     ];
 
     useEffect(() => {
@@ -45,8 +45,7 @@ export const ListDemo = () => {
             setSortOrder(-1);
             setSortField(value.substring(1, value.length));
             setSortKey(value);
-        }
-        else {
+        } else {
             setSortOrder(1);
             setSortField(value);
             setSortKey(value);
@@ -55,11 +54,11 @@ export const ListDemo = () => {
 
     const dataviewHeader = (
         <div className="grid grid-nogutter">
-            <div className="col-6" style={{ textAlign: 'left' }}>
-                <Dropdown value={sortKey} options={sortOptions} optionLabel="label" placeholder="Sort By Price" onChange={onSortChange} />
+            <div className="col-6" style={{textAlign: 'left'}}>
+                <Dropdown value={sortKey} options={sortOptions} optionLabel="label" placeholder="Sort By Price" onChange={onSortChange}/>
             </div>
-            <div className="col-6" style={{ textAlign: 'right' }}>
-                <DataViewLayoutOptions layout={layout} onChange={(e) => setLayout(e.value)} />
+            <div className="col-6" style={{textAlign: 'right'}}>
+                <DataViewLayoutOptions layout={layout} onChange={(e) => setLayout(e.value)}/>
             </div>
         </div>
     );
@@ -68,7 +67,7 @@ export const ListDemo = () => {
         return (
             <div className="col-12">
                 <div className="product-list-item">
-                    <img src={`assets/demo/images/product/${data.image}`} alt={data.name} />
+                    <img src={`assets/demo/images/product/${data.image}`} alt={data.name}/>
                     <div className="product-list-detail">
                         <div className="product-name">{data.name}</div>
                         <div className="product-description">{data.description}</div>
@@ -97,7 +96,7 @@ export const ListDemo = () => {
                         <span className={`product-badge status-${data.inventoryStatus.toLowerCase()}`}>{data.inventoryStatus}</span>
                     </div>
                     <div className="text-center">
-                        <img src={`assets/demo/images/product/${data.image}`} alt={data.name}  className="w-9 shadow-2 my-3 mx-0"/>
+                        <img src={`assets/demo/images/product/${data.image}`} alt={data.name} className="w-9 shadow-2 my-3 mx-0"/>
                         <div className="text-2xl font-bold">{data.name}</div>
                         <div className="mb-3">{data.description}</div>
                         <Rating value={data.rating} readonly cancel={false}/>
@@ -105,7 +104,7 @@ export const ListDemo = () => {
                     <div className="flex align-items-center justify-content-between">
                         <span className="text-2xl font-semibold">${data.price}</span>
                         <Button icon="pi pi-shopping-cart" disabled={data.inventoryStatus === 'OUTOFSTOCK'}/>
-                </div>
+                    </div>
                 </div>
             </div>
         );
@@ -118,8 +117,7 @@ export const ListDemo = () => {
 
         if (layout === 'list') {
             return dataviewListItem(data);
-        }
-        else if (layout === 'grid') {
+        } else if (layout === 'grid') {
             return dataviewGridItem(data);
         }
     };
@@ -137,15 +135,18 @@ export const ListDemo = () => {
                 <div className="card">
                     <h5>PickList</h5>
                     <PickList source={picklistSourceValue} target={picklistTargetValue} sourceHeader="From" targetHeader="To" itemTemplate={(item) => <div>{item.name}</div>}
-                        onChange={(e) => { setPicklistSourceValue(e.source); setPicklistTargetValue(e.target) }} sourceStyle={{ height: '200px' }} targetStyle={{ height: '200px' }}></PickList>
+                              onChange={(e) => {
+                                  setPicklistSourceValue(e.source);
+                                  setPicklistTargetValue(e.target)
+                              }} sourceStyle={{height: '200px'}} targetStyle={{height: '200px'}}></PickList>
                 </div>
             </div>
 
             <div className="col-12 lg:col-4">
                 <div className="card">
                     <h5>OrderList</h5>
-                    <OrderList value={orderlistValue} listStyle={{ height: '200px' }} className="p-orderlist-responsive" rows={10} header="Cities" itemTemplate={(item) => <div>{item.name}</div>}
-                        onChange={(e) => setOrderlistValue(e.value)}></OrderList>
+                    <OrderList value={orderlistValue} listStyle={{height: '200px'}} className="p-orderlist-responsive" rows={10} header="Cities" itemTemplate={(item) => <div>{item.name}</div>}
+                               onChange={(e) => setOrderlistValue(e.value)}></OrderList>
                 </div>
             </div>
         </div>

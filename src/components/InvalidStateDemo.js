@@ -1,15 +1,15 @@
-import React, { useState, useEffect } from 'react';
-import { InputText } from 'primereact/inputtext';
-import { InputTextarea } from 'primereact/inputtextarea';
-import { InputMask } from 'primereact/inputmask';
-import { InputNumber } from 'primereact/inputnumber';
-import { AutoComplete } from 'primereact/autocomplete';
-import { Calendar } from 'primereact/calendar';
-import { Chips } from 'primereact/chips';
-import { Dropdown } from 'primereact/dropdown';
-import { MultiSelect } from 'primereact/multiselect';
-import { Password } from 'primereact/password';
-import { CountryService } from '../service/CountryService';
+import React, {useEffect, useState} from 'react';
+import {InputText} from 'primereact/inputtext';
+import {InputTextarea} from 'primereact/inputtextarea';
+import {InputMask} from 'primereact/inputmask';
+import {InputNumber} from 'primereact/inputnumber';
+import {AutoComplete} from 'primereact/autocomplete';
+import {Calendar} from 'primereact/calendar';
+import {Chips} from 'primereact/chips';
+import {Dropdown} from 'primereact/dropdown';
+import {MultiSelect} from 'primereact/multiselect';
+import {Password} from 'primereact/password';
+import {CountryService} from '../service/CountryService';
 
 export const InvalidStateDemo = () => {
 
@@ -27,11 +27,11 @@ export const InvalidStateDemo = () => {
     const [value10, setValue10] = useState('');
 
     const cities = [
-        { name: 'New York', code: 'NY' },
-        { name: 'Rome', code: 'RM' },
-        { name: 'London', code: 'LDN' },
-        { name: 'Istanbul', code: 'IST' },
-        { name: 'Paris', code: 'PRS' },
+        {name: 'New York', code: 'NY'},
+        {name: 'Rome', code: 'RM'},
+        {name: 'London', code: 'LDN'},
+        {name: 'Istanbul', code: 'IST'},
+        {name: 'Paris', code: 'PRS'},
     ];
 
     useEffect(() => {
@@ -64,7 +64,7 @@ export const InvalidStateDemo = () => {
                         <div className="col-12 md:col-6">
                             <div className="field">
                                 <label htmlFor="inputtext">InputText</label>
-                                <InputText type="text" id="inputtext" value={value1} onChange={(e) => setValue1(e.target.value)} className="p-invalid" />
+                                <InputText type="text" id="inputtext" value={value1} onChange={(e) => setValue1(e.target.value)} className="p-invalid"/>
                             </div>
                             <div className="field">
                                 <label htmlFor="autocomplete">AutoComplete</label>
@@ -80,7 +80,7 @@ export const InvalidStateDemo = () => {
                             </div>
                             <div className="field">
                                 <label htmlFor="password">Password</label>
-                                <Password inputId="password" value={value10} onChange={(e) => setValue10(e.target.value)} className="p-invalid" />
+                                <Password inputId="password" value={value10} onChange={(e) => setValue10(e.target.value)} className="p-invalid"/>
                             </div>
                         </div>
 

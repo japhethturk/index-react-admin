@@ -1,12 +1,13 @@
 import axios from 'axios'
-import { Functions } from '../util/Functions';
+import {Functions} from '../util/Functions';
 
 export class ArticleService {
-    
+
     paginate(lazyParams, token) {
         return axios.get(`${process.env.REACT_APP_API}post/paginate`, {
-                headers: Functions.axiosJsonTokenHeader(token).headers,
-                params: lazyParams,}).then((res) => res.data);
+            headers: Functions.axiosJsonTokenHeader(token).headers,
+            params: lazyParams,
+        }).then((res) => res.data);
     }
 
     store(requestBody, langId, token) {
@@ -22,7 +23,7 @@ export class ArticleService {
     }
 
     remove(id, token) {
-        return axios.get(`${process.env.REACT_APP_SECURE_API}post/remove/${id}`,Functions.axiosJsonTokenHeader(token)).then((res) => res.data);
+        return axios.get(`${process.env.REACT_APP_SECURE_API}post/remove/${id}`, Functions.axiosJsonTokenHeader(token)).then((res) => res.data);
     }
 
     upload(requestBody, token) {

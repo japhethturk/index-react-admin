@@ -391,6 +391,7 @@
 
                 .p-datatable-tbody > tr {
                     border-bottom: 1px solid var(--surface-d);
+
                     > td {
                         text-align: left;
                         display: flex;
@@ -501,7 +502,8 @@ pre[class*="language-"] {
 .p-timeline-event-opposite {
     line-height: 1;
 }
-.p-message-summary{
+
+.p-message-summary {
     margin-right: 5px;
 }
 
@@ -564,6 +566,6 @@ pre[class*="language-"] {
     border-radius: 12px;
 }
 
-.p-message-summary{
+.p-message-summary {
     font-weight: bold;
 }

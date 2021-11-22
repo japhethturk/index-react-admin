@@ -14,9 +14,9 @@ i18n.use(initReactI18next) // passes i18n down to react-i18next
             escapeValue: false, // react already safes from xss
         },
         resources: {
-          tr: {
-            translation: translationTR
-          }
+            tr: {
+                translation: translationTR
+            }
         },
     });
 

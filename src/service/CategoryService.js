@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { Functions } from '../util/Functions';
+import {Functions} from '../util/Functions';
 
 export class CategoryService {
     allTable(langId) {

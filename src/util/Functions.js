@@ -17,13 +17,13 @@ export const Functions = {
         }
         return text;
     },
-    htmlToText(str){
+    htmlToText(str) {
         return str.replace(/<[^>]*>?/gm, '');
     },
     cipher(salt) {
         const textToChars = text => text.split('').map(c => c.charCodeAt(0));
         const byteHex = n => ("0" + Number(n).toString(16)).substr(-2);
-        const applySaltToChar = code => textToChars(salt).reduce((a,b) => a ^ b, code);
+        const applySaltToChar = code => textToChars(salt).reduce((a, b) => a ^ b, code);
 
         return text => text.split('')
             .map(textToChars)
@@ -33,7 +33,7 @@ export const Functions = {
     },
     decipher(salt) {
         const textToChars = text => text.split('').map(c => c.charCodeAt(0));
-        const applySaltToChar = code => textToChars(salt).reduce((a,b) => a ^ b, code);
+        const applySaltToChar = code => textToChars(salt).reduce((a, b) => a ^ b, code);
         return encoded => encoded.match(/.{1,2}/g)
             .map(hex => parseInt(hex, 16))
             .map(applySaltToChar)
@@ -41,7 +41,7 @@ export const Functions = {
             .join('');
     },
     axiosJsonHeader() {
-        return  {
+        return {
             headers: {
                 "Accept": "application/json",
                 "Content-Type": "application/json"
@@ -49,7 +49,7 @@ export const Functions = {
         };
     },
     axiosJsonTokenHeader(token) {
-        return  {
+        return {
             headers: {
                 "Accept": "application/json",
                 "Content-Type": "application/json",
@@ -57,25 +57,26 @@ export const Functions = {
             }
         };
     },
-    axiosMultipartHeader(token){
-        return  {
+    axiosMultipartHeader(token) {
+        return {
             headers: {
-                'Content-Type' : 'multipart/form-data',
+                'Content-Type': 'multipart/form-data',
                 "Authorization": `Bearer ${token}`
             }
         };
     },
-    axiosMultipartHeaderBoundary(token){
-        return  {
+    axiosMultipartHeaderBoundary(token) {
+        return {
             headers: {
-                'Content-Type' : `multipart/form-data; charset=utf-8; boundary=${Math.random().toString().substr(2)}`,
+                'Content-Type': `multipart/form-data; charset=utf-8; boundary=${Math.random().toString().substr(2)}`,
                 "Authorization": `Bearer ${token}`
             }
         };
     },
-    findCategory (categories, key) {
+    findCategory(categories, key) {
         var trail = [];
         var found = false;
+
         function recurse(categoryAry) {
             for (var i = 0; i < categoryAry.length; i++) {
                 trail.push(categoryAry[i].key);
@@ -88,7 +89,7 @@ export const Functions = {
                     // Are there children / sub-categories? YES
                     if (categoryAry[i].children.length > 0) {
                         recurse(categoryAry[i].children);
-                        if(found){
+                        if (found) {
                             break;
                         }
                     }
@@ -96,59 +97,66 @@ export const Functions = {
                 trail.pop();
             }
         }
+
         recurse(categories);
         return trail
     },
-    subName (limit, str) {
+    subName(limit, str) {
         const oldLength = str.length;
-        if (oldLength>limit){
-            return str.substring(0, limit)+'...';
+        if (oldLength > limit) {
+            return str.substring(0, limit) + '...';
         } else {
             return str;
         }
     },
-    clone (data) {return JSON.parse(JSON.stringify(data))},
-    setting(settings, key, r = ''){
+    clone(data) {
+        return JSON.parse(JSON.stringify(data))
+    },
+    setting(settings, key, r = '') {
         let callcenter = settings.find(item => item.key === key)
-        if(callcenter === undefined) {
+        if (callcenter === undefined) {
             return r
         } else {
             return callcenter.value
         }
     },
-    isEmpty(obj) {return Object.keys(obj).length === 0;},
-    isNumber(n) { return /^-?[\d.]+(?:e-?\d+)?$/.test(n);},
-    limitedString(str, limit){
+    isEmpty(obj) {
+        return Object.keys(obj).length === 0;
+    },
+    isNumber(n) {
+        return /^-?[\d.]+(?:e-?\d+)?$/.test(n);
+    },
+    limitedString(str, limit) {
         if (limit < str.length) {
             return str.substr(0, limit) + "..."
         } else {
             return str
         }
     },
-    percentage(mPrice, mOldPrice){
+    percentage(mPrice, mOldPrice) {
         let price = parseFloat(mPrice)
         let oldPrice = parseFloat(mOldPrice)
         if (!isNaN(price) && !isNaN(oldPrice)) {
             if (oldPrice === null || oldPrice === 0 || price >= oldPrice) {
                 return 0
             } else {
-                let discount = oldPrice-price;
-                return  ((discount/price) * 100).toFixed(0);
+                let discount = oldPrice - price;
+                return ((discount / price) * 100).toFixed(0);
             }
         } else
             return 0
     },
-    uniqid(){
+    uniqid() {
         // always start with a letter (for DOM friendliness)
-        let idString=String.fromCharCode(Math.floor((Math.random()*25)+65));
+        let idString = String.fromCharCode(Math.floor((Math.random() * 25) + 65));
         do {
             // between numbers and characters (48 is 0 and 90 is Z (42-48 = 90)
-            let ascicode=Math.floor((Math.random()*42)+48);
-            if (ascicode<58 || ascicode>64){
+            let ascicode = Math.floor((Math.random() * 42) + 48);
+            if (ascicode < 58 || ascicode > 64) {
                 // exclude all chars between : (58) and @ (64)
-                idString+=String.fromCharCode(ascicode);
+                idString += String.fromCharCode(ascicode);
             }
-        } while (idString.length<32);
+        } while (idString.length < 32);
 
         return (idString);
     },

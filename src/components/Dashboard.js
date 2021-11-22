@@ -1,10 +1,10 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Menu } from 'primereact/menu';
-import { Button } from 'primereact/button';
-import { Chart } from 'primereact/chart';
-import { DataTable } from 'primereact/datatable';
-import { Column } from 'primereact/column';
-import { ProductService } from '../service/ProductService';
+import React, {useEffect, useRef, useState} from 'react';
+import {Menu} from 'primereact/menu';
+import {Button} from 'primereact/button';
+import {Chart} from 'primereact/chart';
+import {DataTable} from 'primereact/datatable';
+import {Column} from 'primereact/column';
+import {ProductService} from '../service/ProductService';
 
 const lineData = {
     labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
@@ -41,7 +41,7 @@ export const Dashboard = () => {
     }, []);
 
     const formatCurrency = (value) => {
-        return value.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+        return value.toLocaleString('en-US', {style: 'currency', currency: 'USD'});
     };
 
     return (
@@ -111,7 +111,7 @@ export const Dashboard = () => {
                 <div className="card">
                     <h5>Recent Sales</h5>
                     <DataTable value={products} className="p-datatable-customers" rows={5} paginator>
-                        <Column header="Image" body={(data) => <img src={`assets/demo/images/product/${data.image}`} alt={data.image} width="50" />}/>
+                        <Column header="Image" body={(data) => <img src={`assets/demo/images/product/${data.image}`} alt={data.image} width="50"/>}/>
                         <Column field="name" header="Name" sortable/>
                         <Column field="price" header="Price" sortable body={(data) => formatCurrency(data.price)}/>
                         <Column header="View" body={() => (
@@ -126,7 +126,7 @@ export const Dashboard = () => {
                         <h5>Best Selling Products</h5>
                         <div>
                             <Button type="button" icon="pi pi-ellipsis-v" className="p-button-rounded p-button-text p-button-plain" onClick={(event) => menu1.current.toggle(event)}/>
-                            <Menu ref={menu1} popup model={[{ label: 'Add New', icon: 'pi pi-fw pi-plus' }, { label: 'Remove', icon: 'pi pi-fw pi-minus' }]}/>
+                            <Menu ref={menu1} popup model={[{label: 'Add New', icon: 'pi pi-fw pi-plus'}, {label: 'Remove', icon: 'pi pi-fw pi-minus'}]}/>
                         </div>
                     </div>
                     <ul className="list-none p-0 m-0">
@@ -209,7 +209,7 @@ export const Dashboard = () => {
             <div className="col-12 xl:col-6">
                 <div className="card">
                     <h5>Sales Overview</h5>
-                    <Chart type="line" data={lineData} />
+                    <Chart type="line" data={lineData}/>
                 </div>
 
                 <div className="card">

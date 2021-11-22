@@ -11,9 +11,9 @@ import {Calendar} from "primereact/calendar";
 import StateContext from "../util/context/StateContext";
 import {SplitButton} from "primereact/splitbutton";
 import SelectLanguage from "./layout/SelectLanguage";
-import { Card } from "primereact/card";
-import { ArticleService } from "../service/ArticleService";
-import { CategoryService } from "../service/CategoryService";
+import {Card} from "primereact/card";
+import {ArticleService} from "../service/ArticleService";
+import {CategoryService} from "../service/CategoryService";
 
 const Articles = (props) => {
 
@@ -59,20 +59,20 @@ const Articles = (props) => {
                     messages.current.show([{severity: "error", summary: t("error"), detail: t("unexpected_response"), sticky: true,},]);
                 }
             }).catch((e) => {
-                messages.current.show([{severity: "error", summary: t("error"), detail: t("occurred_connecting_error"), sticky: true,},]);
-            });
+            messages.current.show([{severity: "error", summary: t("error"), detail: t("occurred_connecting_error"), sticky: true,},]);
+        });
 
-            if (lazyParams.loaded) {
-                setLazyParams((oldValue) => {
-                    return {
-                        langId,
-                        rows: oldValue.rows,
-                        first: oldValue.first,
-                        loaded: true,
-                    };
-                });
-            }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        if (lazyParams.loaded) {
+            setLazyParams((oldValue) => {
+                return {
+                    langId,
+                    rows: oldValue.rows,
+                    first: oldValue.first,
+                    loaded: true,
+                };
+            });
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [langId]);
 
     useEffect(() => {
@@ -99,41 +99,40 @@ const Articles = (props) => {
         if (lazyParams.loaded) {
             setShowProgress(true);
             articleService.paginate(lazyParams, appState.admin.token).then((response) => {
-                    if (response.status !== undefined) {
-                        if (response.status === "ok") {
-                            setTotalRecords(response.paginate.total);
-                            setArticles(response.paginate.data);
-                        } else {
-                            messages.current.show([response.message]);
-                        }
+                if (response.status !== undefined) {
+                    if (response.status === "ok") {
+                        setTotalRecords(response.paginate.total);
+                        setArticles(response.paginate.data);
                     } else {
-                        messages.current.show([
-                            {
-                                severity: "error",
-                                summary: t("error"),
-                                detail: t("unexpected_response"),
-                                sticky: true,
-                            },
-                        ]);
+                        messages.current.show([response.message]);
                     }
-                }).catch((e) => {
+                } else {
                     messages.current.show([
                         {
                             severity: "error",
                             summary: t("error"),
-                            detail: t("occurred_connecting_error"),
+                            detail: t("unexpected_response"),
                             sticky: true,
                         },
                     ]);
-                }).finally(() => {
-                    setShowProgress(false);
-                });
+                }
+            }).catch((e) => {
+                messages.current.show([
+                    {
+                        severity: "error",
+                        summary: t("error"),
+                        detail: t("occurred_connecting_error"),
+                        sticky: true,
+                    },
+                ]);
+            }).finally(() => {
+                setShowProgress(false);
+            });
         }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [lazyParams]);
 
 
-    
     const confirmDeleteRow = () => {
         messages.current.clear();
         setShowProgress(true);
@@ -341,95 +340,95 @@ const Articles = (props) => {
         />
     );
 
-    
+
     const cardHeader = (
         <div className="flex align-items-center justify-content-between mb-0 p-3 pb-0">
             <h5 className="m-0">{t('articles')}</h5>
-            <SelectLanguage value={langId}  onChange={(e) => setLangId(e.value)}/>
-            <Button icon="pi pi-plus" className="p-button-text" onClick={(e) => history.push('/article/add')} />
+            <SelectLanguage value={langId} onChange={(e) => setLangId(e.value)}/>
+            <Button icon="pi pi-plus" className="p-button-text" onClick={(e) => history.push('/article/add')}/>
         </div>
     );
 
     return (
         <div className="grid">
             <div className="col-12">
-            <Card header={cardHeader}>
-            <Messages ref={messages}/>
+                <Card header={cardHeader}>
+                    <Messages ref={messages}/>
 
-            <Dialog
-                header={t("confirmation")}
-                visible={deleteRow.name !== undefined}
-                style={{width: appState.isMobile ? "90%" : "40vw"}}
-                footer={renderDialogFooter()}
-                onHide={() => onHideDialog()}
-            >
-                <p>
-                    {t("confirmation_delete").replaceAll(
-                        ":attribute",
-                        deleteRow.name
-                    )}
-                </p>
-            </Dialog>
+                    <Dialog
+                        header={t("confirmation")}
+                        visible={deleteRow.name !== undefined}
+                        style={{width: appState.isMobile ? "90%" : "40vw"}}
+                        footer={renderDialogFooter()}
+                        onHide={() => onHideDialog()}
+                    >
+                        <p>
+                            {t("confirmation_delete").replaceAll(
+                                ":attribute",
+                                deleteRow.name
+                            )}
+                        </p>
+                    </Dialog>
 
-            <div className="datatable-responsive">
-                <DataTable
-                    ref={dt}
-                    value={articles}
-                    lazy
-                    className="p-datatable-responsive p-datatable-sm"
-                    resizableColumns
-                    columnResizeMode="fit"
-                    showGridlines
-                    paginator
-                    first={lazyParams.first}
-                    rows={lazyParams.rows}
-                    totalRecords={totalRecords}
-                    onPage={onPage}
-                    onSort={onSort}
-                    sortField={lazyParams.sortField}
-                    sortOrder={lazyParams.sortOrder}
-                    onFilter={onFilter}
-                    filters={lazyParams.filters}
-                    loading={showProgress}
-                    emptyMessage={t("no_records_found")}
-                >
-                    <Column
-                        field="image"
-                        header={t("image")}
-                        body={imageBodyTemplate}
-                        style={{width: 125}}
-                    />
-                    <Column
-                        field="name"
-                        header={t("name")}
-                        body={nameBodyTemplate}
-                        sortable
-                        filter
-                    />
-                    <Column
-                        field="category.name"
-                        header={t("category")}
-                        body={categoryBodyTemplate}
-                        sortable
-                        filter
-                        filterElement={categoryFilter}
-                    />
-                    <Column
-                        field="date"
-                        header={t("date")}
-                        body={dateBodyTemplate}
-                        sortable
-                        filter
-                        filterElement={dateFilter}
-                    />
-                    <Column
-                        header={t("operation")}
-                        body={actionTemplate}
-                        style={{width: 120}}
-                    />
-                </DataTable>
-            </div>
-            </Card>
+                    <div className="datatable-responsive">
+                        <DataTable
+                            ref={dt}
+                            value={articles}
+                            lazy
+                            className="p-datatable-responsive p-datatable-sm"
+                            resizableColumns
+                            columnResizeMode="fit"
+                            showGridlines
+                            paginator
+                            first={lazyParams.first}
+                            rows={lazyParams.rows}
+                            totalRecords={totalRecords}
+                            onPage={onPage}
+                            onSort={onSort}
+                            sortField={lazyParams.sortField}
+                            sortOrder={lazyParams.sortOrder}
+                            onFilter={onFilter}
+                            filters={lazyParams.filters}
+                            loading={showProgress}
+                            emptyMessage={t("no_records_found")}
+                        >
+                            <Column
+                                field="image"
+                                header={t("image")}
+                                body={imageBodyTemplate}
+                                style={{width: 125}}
+                            />
+                            <Column
+                                field="name"
+                                header={t("name")}
+                                body={nameBodyTemplate}
+                                sortable
+                                filter
+                            />
+                            <Column
+                                field="category.name"
+                                header={t("category")}
+                                body={categoryBodyTemplate}
+                                sortable
+                                filter
+                                filterElement={categoryFilter}
+                            />
+                            <Column
+                                field="date"
+                                header={t("date")}
+                                body={dateBodyTemplate}
+                                sortable
+                                filter
+                                filterElement={dateFilter}
+                            />
+                            <Column
+                                header={t("operation")}
+                                body={actionTemplate}
+                                style={{width: 120}}
+                            />
+                        </DataTable>
+                    </div>
+                </Card>
             </div>
         </div>
     );

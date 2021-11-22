@@ -1,38 +1,38 @@
-import React, { useState, useEffect } from 'react';
+import React, {useEffect, useState} from 'react';
 import classNames from 'classnames';
-import { Route } from 'react-router-dom';
-import { CSSTransition } from 'react-transition-group';
+import {Route} from 'react-router-dom';
+import {CSSTransition} from 'react-transition-group';
 
-import { AppTopbar } from './AppTopbar';
-import { AppFooter } from './AppFooter';
-import { AppMenu } from './AppMenu';
+import {AppTopbar} from './AppTopbar';
+import {AppFooter} from './AppFooter';
+import {AppMenu} from './AppMenu';
 
-import { Dashboard } from './components/Dashboard';
-import { ButtonDemo } from './components/ButtonDemo';
-import { ChartDemo } from './components/ChartDemo';
-import { Documentation } from './components/Documentation';
-import { FileDemo } from './components/FileDemo';
-import { FloatLabelDemo } from './components/FloatLabelDemo';
-import { FormLayoutDemo } from './components/FormLayoutDemo';
-import { InputDemo } from './components/InputDemo';
-import { ListDemo } from './components/ListDemo';
-import { MenuDemo } from './components/MenuDemo';
-import { MessagesDemo } from './components/MessagesDemo';
-import { MiscDemo } from './components/MiscDemo';
-import { OverlayDemo } from './components/OverlayDemo';
-import { PanelDemo } from './components/PanelDemo';
-import { TableDemo } from './components/TableDemo';
-import { TreeDemo } from './components/TreeDemo';
-import { InvalidStateDemo } from './components/InvalidStateDemo';
+import {Dashboard} from './components/Dashboard';
+import {ButtonDemo} from './components/ButtonDemo';
+import {ChartDemo} from './components/ChartDemo';
+import {Documentation} from './components/Documentation';
+import {FileDemo} from './components/FileDemo';
+import {FloatLabelDemo} from './components/FloatLabelDemo';
+import {FormLayoutDemo} from './components/FormLayoutDemo';
+import {InputDemo} from './components/InputDemo';
+import {ListDemo} from './components/ListDemo';
+import {MenuDemo} from './components/MenuDemo';
+import {MessagesDemo} from './components/MessagesDemo';
+import {MiscDemo} from './components/MiscDemo';
+import {OverlayDemo} from './components/OverlayDemo';
+import {PanelDemo} from './components/PanelDemo';
+import {TableDemo} from './components/TableDemo';
+import {TreeDemo} from './components/TreeDemo';
+import {InvalidStateDemo} from './components/InvalidStateDemo';
 
-import { Crud } from './pages/Crud';
-import { EmptyPage } from './pages/EmptyPage';
-import { TimelineDemo } from './pages/TimelineDemo';
+import {Crud} from './pages/Crud';
+import {EmptyPage} from './pages/EmptyPage';
+import {TimelineDemo} from './pages/TimelineDemo';
 
 
 import StateContext from "./util/context/StateContext"
 import DispatchContext from "./util/context/DispatchContext"
-import { useImmerReducer } from "use-immer"
+import {useImmerReducer} from "use-immer"
 import Cookies from "js-cookie";
 import {useTranslation} from "react-i18next";
 
@@ -47,14 +47,14 @@ import './layout/layout.scss';
 import './App.scss';
 import "./util/i18n";
 import Login from './Login';
-import { AuthService } from './service/AuthService';
-import { Functions } from './util/Functions';
+import {AuthService} from './service/AuthService';
+import {Functions} from './util/Functions';
 import Categories from './components/Categories';
 import Articles from './components/Articles';
 import CategoryDetail from './components/CategoryDetail';
 import ArticleDetail from './components/ArticleDetail';
-import { Hadithes } from './components/Hadithes';
-import { HadithDetail } from './components/HadithDetail';
+import {Hadithes} from './components/Hadithes';
+import {HadithDetail} from './components/HadithDetail';
 
 const App = () => {
     const {t} = useTranslation()
@@ -82,14 +82,14 @@ const App = () => {
         isMobile: false,
         langId: localStorage.getItem("LANG_ID") ? localStorage.getItem("LANG_ID") : "1",
         channel: null,
-        siteData:{},
+        siteData: {},
         admin: {
             id: localStorage.getItem("ADMIN_ID"),
             token: localStorage.getItem("ADMIN_TOKEN"),
             name: localStorage.getItem("ADMIN_NAME"),
             role: localStorage.getItem("ADMIN_ROLE")
         },
-        adminLoggedIn: localStorage.getItem("ADMIN_LOGGED_IN") ? Boolean(localStorage.getItem("ADMIN_LOGGED_IN")) : false ,
+        adminLoggedIn: localStorage.getItem("ADMIN_LOGGED_IN") ? Boolean(localStorage.getItem("ADMIN_LOGGED_IN")) : false,
     }
 
 
@@ -102,7 +102,7 @@ const App = () => {
             case "logoutAdmin":
                 draft.adminLoggedIn = false
                 draft.admin = {
-                    id:'',
+                    id: '',
                     token: '',
                     name: '',
                     role: ''
@@ -113,12 +113,12 @@ const App = () => {
                 return
             default:
         }
-      }
-      
-      const [state, dispatch] = useImmerReducer(ourReducer, initialState)
+    }
+
+    const [state, dispatch] = useImmerReducer(ourReducer, initialState)
 
 
-      useEffect(() => {
+    useEffect(() => {
         let isMounted = true;
         if (state.adminLoggedIn) {
             authService
@@ -130,7 +130,7 @@ const App = () => {
                             let values = {email: Cookies.get("ADMIN_MAIL"), password: decipher(Cookies.get("ADMIN_PASSWORD")),};
                             authService.login(values).then((response) => {
                                 if (response.status === "ok") {
-                                    dispatch({type: "loginAdmin",data: response,});
+                                    dispatch({type: "loginAdmin", data: response,});
                                 } else {
                                     dispatch({type: "logoutAdmin"});
                                 }
@@ -144,14 +144,14 @@ const App = () => {
                         dispatch({type: "toast", data: response.message});
                     }
                 }).catch((e) => {
-                    dispatch({type: "logoutAdmin"});
-                });
+                dispatch({type: "logoutAdmin"});
+            });
         }
 
         return () => {
             isMounted = false;
         };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
 
@@ -161,9 +161,12 @@ const App = () => {
             localStorage.setItem("ADMIN_TOKEN", state.admin.token);
             localStorage.setItem("ADMIN_NAME", state.admin.name);
             localStorage.setItem("ADMIN_ROLE", state.admin.role);
-            localStorage.setItem("ADMIN_LOGGED_IN",state.adminLoggedIn.toString());
+            localStorage.setItem("ADMIN_LOGGED_IN", state.adminLoggedIn.toString());
         } else {
-            if (state.admin.token) {authService.logOut(state.admin.token).then((r) => { });}
+            if (state.admin.token) {
+                authService.logOut(state.admin.token).then((r) => {
+                });
+            }
             localStorage.removeItem("ADMIN_ID");
             localStorage.removeItem("ADMIN_TOKEN");
             localStorage.removeItem("ADMIN_NAME");
@@ -172,13 +175,13 @@ const App = () => {
             Cookies.remove("ADMIN_MAIL");
             Cookies.remove("ADMIN_PASSWORD");
         }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [state.adminLoggedIn])
 
     useEffect(() => {
         localStorage.setItem("LANG_ID", state.langId);
     }, [state.langId])
-    
+
     useEffect(() => {
         if (mobileMenuActive) {
             addClass(document.body, "body-overflow-hidden");
@@ -206,18 +209,16 @@ const App = () => {
 
         if (isDesktop()) {
             if (layoutMode === 'overlay') {
-                if(mobileMenuActive === true) {
+                if (mobileMenuActive === true) {
                     setOverlayMenuActive(true);
                 }
 
                 setOverlayMenuActive((prevState) => !prevState);
                 setMobileMenuActive(false);
-            }
-            else if (layoutMode === 'static') {
+            } else if (layoutMode === 'static') {
                 setStaticMenuInactive((prevState) => !prevState);
             }
-        }
-        else {
+        } else {
             setMobileMenuActive((prevState) => !prevState);
         }
 
@@ -337,8 +338,16 @@ const App = () => {
         {
             label: 'Get Started',
             items: [
-                {label: 'Documentation', icon: 'pi pi-fw pi-question', command: () => {window.location = "#/documentation"}},
-                {label: 'View Source', icon: 'pi pi-fw pi-search', command: () => {window.location = "https://github.com/primefaces/sakai-react"}}
+                {
+                    label: 'Documentation', icon: 'pi pi-fw pi-question', command: () => {
+                        window.location = "#/documentation"
+                    }
+                },
+                {
+                    label: 'View Source', icon: 'pi pi-fw pi-search', command: () => {
+                        window.location = "https://github.com/primefaces/sakai-react"
+                    }
+                }
             ]
         }
     ];
@@ -369,69 +378,66 @@ const App = () => {
     });
 
 
-    
-
-
     return (
-    <StateContext.Provider value={state}>
-        <DispatchContext.Provider value={dispatch}>
-        {
-            state.adminLoggedIn ? 
-                <div className={wrapperClass} onClick={onWrapperClick}>
-                <AppTopbar onToggleMenuClick={onToggleMenuClick} layoutColorMode={layoutColorMode}
-                           mobileTopbarMenuActive={mobileTopbarMenuActive} onMobileTopbarMenuClick={onMobileTopbarMenuClick} onMobileSubTopbarMenuClick={onMobileSubTopbarMenuClick}/>
-    
-                <div className="layout-sidebar" onClick={onSidebarClick}>
-                    <AppMenu model={menu} onMenuItemClick={onMenuItemClick} layoutColorMode={layoutColorMode} />
-                </div>
-    
-                <div className="layout-main-container">
-                    <div className="layout-main">
-                        <Route path="/" exact component={Dashboard}/>
-                        <Route path="/categories" component={Categories}/>
-                        <Route path="/category/add" component={CategoryDetail}/>
-                        <Route path="/category/edit/:id" component={CategoryDetail}/>
-                        <Route path="/articles" component={Articles}/>
-                        <Route path="/article/add" component={ArticleDetail}/>
-                        <Route path="/article/edit/:id" component={ArticleDetail}/>
-                        <Route path="/hadithes" component={Hadithes}/>
-                        <Route path="/hadith/add" component={HadithDetail}/>
-                        <Route path="/hadith/edit/:id" component={HadithDetail}/>
-                        <Route path="/formlayout" component={FormLayoutDemo}/>
-                        <Route path="/input" component={InputDemo}/>
-                        <Route path="/floatlabel" component={FloatLabelDemo}/>
-                        <Route path="/invalidstate" component={InvalidStateDemo}/>
-                        <Route path="/button" component={ButtonDemo}/>
-                        <Route path="/table" component={TableDemo}/>
-                        <Route path="/list" component={ListDemo}/>
-                        <Route path="/tree" component={TreeDemo}/>
-                        <Route path="/panel" component={PanelDemo}/>
-                        <Route path="/overlay" component={OverlayDemo}/>
-                        <Route path="/menu" component={MenuDemo}/>
-                        <Route path="/messages" component={MessagesDemo}/>
-                        <Route path="/file" component={FileDemo}/>
-                        <Route path="/chart" component={ChartDemo}/>
-                        <Route path="/misc" component={MiscDemo}/>
-                        <Route path="/timeline" component={TimelineDemo}/>
-                        <Route path="/crud" component={Crud}/>
-                        <Route path="/empty" component={EmptyPage}/>
-                        <Route path="/documentation" component={Documentation}/>
-                    </div>
-    
-                    <AppFooter layoutColorMode={layoutColorMode}/>
-                </div>
-    
-    
-                <CSSTransition classNames="layout-mask" timeout={{ enter: 200, exit: 200 }} in={mobileMenuActive} unmountOnExit>
-                    <div className="layout-mask p-component-overlay"></div>
-                </CSSTransition>
-    
-            </div>
-            :
-            <Login/>
-        }
-        </DispatchContext.Provider>
-    </StateContext.Provider> 
+        <StateContext.Provider value={state}>
+            <DispatchContext.Provider value={dispatch}>
+                {
+                    state.adminLoggedIn ?
+                        <div className={wrapperClass} onClick={onWrapperClick}>
+                            <AppTopbar onToggleMenuClick={onToggleMenuClick} layoutColorMode={layoutColorMode}
+                                       mobileTopbarMenuActive={mobileTopbarMenuActive} onMobileTopbarMenuClick={onMobileTopbarMenuClick} onMobileSubTopbarMenuClick={onMobileSubTopbarMenuClick}/>
+
+                            <div className="layout-sidebar" onClick={onSidebarClick}>
+                                <AppMenu model={menu} onMenuItemClick={onMenuItemClick} layoutColorMode={layoutColorMode}/>
+                            </div>
+
+                            <div className="layout-main-container">
+                                <div className="layout-main">
+                                    <Route path="/" exact component={Dashboard}/>
+                                    <Route path="/categories" component={Categories}/>
+                                    <Route path="/category/add" component={CategoryDetail}/>
+                                    <Route path="/category/edit/:id" component={CategoryDetail}/>
+                                    <Route path="/articles" component={Articles}/>
+                                    <Route path="/article/add" component={ArticleDetail}/>
+                                    <Route path="/article/edit/:id" component={ArticleDetail}/>
+                                    <Route path="/hadithes" component={Hadithes}/>
+                                    <Route path="/hadith/add" component={HadithDetail}/>
+                                    <Route path="/hadith/edit/:id" component={HadithDetail}/>
+                                    <Route path="/formlayout" component={FormLayoutDemo}/>
+                                    <Route path="/input" component={InputDemo}/>
+                                    <Route path="/floatlabel" component={FloatLabelDemo}/>
+                                    <Route path="/invalidstate" component={InvalidStateDemo}/>
+                                    <Route path="/button" component={ButtonDemo}/>
+                                    <Route path="/table" component={TableDemo}/>
+                                    <Route path="/list" component={ListDemo}/>
+                                    <Route path="/tree" component={TreeDemo}/>
+                                    <Route path="/panel" component={PanelDemo}/>
+                                    <Route path="/overlay" component={OverlayDemo}/>
+                                    <Route path="/menu" component={MenuDemo}/>
+                                    <Route path="/messages" component={MessagesDemo}/>
+                                    <Route path="/file" component={FileDemo}/>
+                                    <Route path="/chart" component={ChartDemo}/>
+                                    <Route path="/misc" component={MiscDemo}/>
+                                    <Route path="/timeline" component={TimelineDemo}/>
+                                    <Route path="/crud" component={Crud}/>
+                                    <Route path="/empty" component={EmptyPage}/>
+                                    <Route path="/documentation" component={Documentation}/>
+                                </div>
+
+                                <AppFooter layoutColorMode={layoutColorMode}/>
+                            </div>
+
+
+                            <CSSTransition classNames="layout-mask" timeout={{enter: 200, exit: 200}} in={mobileMenuActive} unmountOnExit>
+                                <div className="layout-mask p-component-overlay"></div>
+                            </CSSTransition>
+
+                        </div>
+                        :
+                        <Login/>
+                }
+            </DispatchContext.Provider>
+        </StateContext.Provider>
     );
 
 

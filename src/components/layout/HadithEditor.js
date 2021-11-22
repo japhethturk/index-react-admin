@@ -1,19 +1,18 @@
-import React, { useContext, useEffect, useRef, useState } from 'react';
-import { Card } from 'primereact/card';
-import { useTranslation } from 'react-i18next';
-import { useHistory } from 'react-router';
-import { Button } from 'primereact/button';
-import { InputText } from 'primereact/inputtext';
-import { Editor } from 'primereact/editor';
-import { TreeTable } from 'primereact/treetable';
-import { Column } from 'primereact/column';
-import { Toast } from 'primereact/toast';
+import React, {useContext, useEffect, useRef, useState} from 'react';
+import {useTranslation} from 'react-i18next';
+import {useHistory} from 'react-router';
+import {Button} from 'primereact/button';
+import {InputText} from 'primereact/inputtext';
+import {Editor} from 'primereact/editor';
+import {TreeTable} from 'primereact/treetable';
+import {Column} from 'primereact/column';
+import {Toast} from 'primereact/toast';
 import {ProgressBar} from "primereact/progressbar";
 import {Messages} from "primereact/messages";
 import SelectLanguage from './SelectLanguage';
 import StateContext from '../../util/context/StateContext';
-import { HadithService } from '../../service/HadithService';
-import { Functions } from '../../util/Functions';
+import {HadithService} from '../../service/HadithService';
+import {Functions} from '../../util/Functions';
 
 export const HadithEditor = () => {
     const history = useHistory()
@@ -42,10 +41,10 @@ export const HadithEditor = () => {
 
     useEffect(() => {
         hadithService.allIndex(langId).then(response => {
-            if(response.status === 'ok'){
+            if (response.status === 'ok') {
                 setNodes(Functions.clone(response.list))
             }
-        }).finally(()=> setShowProgress(false));
+        }).finally(() => setShowProgress(false));
     }, [langId]); // eslint-disable-line react-hooks/exhaustive-deps
 
 
@@ -55,12 +54,12 @@ export const HadithEditor = () => {
             name: newIndex,
             parent_id: newIndexParentKey
         };
-        if(newIndex === '') {
+        if (newIndex === '') {
             setNewIndexBool(false)
             setNewIndexParentKey(null)
         } else {
             hadithService.storeIndex(requestBody, appState.admin.token).then(response => {
-                if(response.status="ok"){
+                if (response.status = "ok") {
                     setNodes(response.list)
                     setNewIndex('')
                     setNewIndexBool(false)
@@ -75,11 +74,11 @@ export const HadithEditor = () => {
             lang_id: langId,
             name: editIndex,
         };
-        if(editIndex === '') {
+        if (editIndex === '') {
             setEditIndexParentKey(null)
         } else {
             hadithService.updateIndex(id, requestBody, appState.admin.token).then(response => {
-                if(response.status="ok"){
+                if (response.status = "ok") {
                     setNodes(response.list)
                     setEditIndex('')
                     setEditIndexParentKey(null)
@@ -91,7 +90,7 @@ export const HadithEditor = () => {
 
     const confirmDeleteRow = (row) => {
         // messages.current.clear();
-        
+
         hadithService.removeIndex(row.id, langId, appState.admin.token).then((response) => {
             if (response.status !== undefined) {
                 if (response.status === "ok") {
@@ -100,28 +99,30 @@ export const HadithEditor = () => {
             } else {
             }
         }).catch((e) => {
-            console.log(e)  ;
+            console.log(e);
         })
         toastBC.current.clear()
     };
 
     const showConfirmDelete = (row) => {
-        toastBC.current.show({ severity: 'warn', sticky: true, content: (
-            <div className="p-flex p-flex-column" style={{flex: '1'}}>
-                <div style={{textAlign:'center'}}>
-                    <i className="pi pi-exclamation-triangle" style={{fontSize: '3rem'}}></i>
-                    <h6>{t("confirmation_delete").replaceAll(":attribute", row.name)}</h6>
-                </div>
-                <div className="flex align-items-center justify-content-end">
-                    <div className="p-col-6 ">
-                        <Button type="button" label={t('yes')} className="p-button-success" style={{marginRight:5}} onClick={()=> confirmDeleteRow(row) }/>
+        toastBC.current.show({
+            severity: 'warn', sticky: true, content: (
+                <div className="p-flex p-flex-column" style={{flex: '1'}}>
+                    <div style={{textAlign: 'center'}}>
+                        <i className="pi pi-exclamation-triangle" style={{fontSize: '3rem'}}></i>
+                        <h6>{t("confirmation_delete").replaceAll(":attribute", row.name)}</h6>
                     </div>
-                    <div className="p-col-6">
-                        <Button type="button" label={t('no')} className="p-button-secondary" onClick={()=> toastBC.current.clear()}/>
+                    <div className="flex align-items-center justify-content-end">
+                        <div className="p-col-6 ">
+                            <Button type="button" label={t('yes')} className="p-button-success" style={{marginRight: 5}} onClick={() => confirmDeleteRow(row)}/>
+                        </div>
+                        <div className="p-col-6">
+                            <Button type="button" label={t('no')} className="p-button-secondary" onClick={() => toastBC.current.clear()}/>
+                        </div>
                     </div>
                 </div>
-            </div>
-        ) });
+            )
+        });
     }
 
 
@@ -147,10 +148,10 @@ export const HadithEditor = () => {
                 }
                 messages.current.show([response.message]);
             } else {
-                messages.current.show([{severity: "error",summary: t("error"),detail: t("unexpected_response"),sticky: true,},]);
+                messages.current.show([{severity: "error", summary: t("error"), detail: t("unexpected_response"), sticky: true,},]);
             }
         }).catch((e) => {
-            messages.current.show([{severity: "error",summary: t("error"),detail: t("occurred_connecting_error"),sticky: true,},]);
+            messages.current.show([{severity: "error", summary: t("error"), detail: t("occurred_connecting_error"), sticky: true,},]);
         }).finally(() => {
             setShowProgress(false);
         });
@@ -158,27 +159,26 @@ export const HadithEditor = () => {
     }
 
 
-
     const cardHeader = (
         <div className="flex align-items-center justify-content-between mb-0 p-3 pb-0">
             <div className="flex align-items-center justify-content-between">
-                <Button icon="pi pi-arrow-left" className="p-button-text" onClick={(event) => history.goBack()} />
+                <Button icon="pi pi-arrow-left" className="p-button-text" onClick={(event) => history.goBack()}/>
                 <h5 className="m-0">{t('hadithes')}</h5>
             </div>
-            <SelectLanguage value={langId}  onChange={(e) => setLangId(e.value)}/>
+            <SelectLanguage value={langId} onChange={(e) => setLangId(e.value)}/>
         </div>
     );
 
     const treeTableFuncMap = {
         'globalFilter': setGlobalFilter
     };
-    
+
     const getHeader = (globalFilterKey) => {
         return (
             <div className="p-text-right">
                 <div className="p-input-icon-left">
                     <i className="pi pi-search"></i>
-                    <InputText type="search" onInput={(e) => treeTableFuncMap[`${globalFilterKey}`](e.target.value)} placeholder={t('filter')} size="50" />
+                    <InputText type="search" onInput={(e) => treeTableFuncMap[`${globalFilterKey}`](e.target.value)} placeholder={t('filter')} size="50"/>
                 </div>
             </div>
         );
@@ -188,30 +188,36 @@ export const HadithEditor = () => {
 
     const actionTemplate = (node, column) => {
         return (
-            <div  className="flex align-items-center justify-content-end">
+            <div className="flex align-items-center justify-content-end">
                 {
-                    node.key === newIndexParentKey ? 
-                    <>
-                        <InputText id="in" placeholder={t('new')} value={newIndex} onChange={(e) => setNewIndex(e.target.value)} style={{width:"70%"}}/>
-                        <Button icon="pi pi-check" onClick={()=> addNewIndex()} />
-                    </>
-                    :
-                    <Button icon="pi pi-plus"  className="p-button-rounded" onClick={()=>{setNewIndexParentKey(node.key)}} />
+                    node.key === newIndexParentKey ?
+                        <>
+                            <InputText id="in" placeholder={t('new')} value={newIndex} onChange={(e) => setNewIndex(e.target.value)} style={{width: "70%"}}/>
+                            <Button icon="pi pi-check" onClick={() => addNewIndex()}/>
+                        </>
+                        :
+                        <Button icon="pi pi-plus" className="p-button-rounded" onClick={() => {
+                            setNewIndexParentKey(node.key)
+                        }}/>
                 }
                 {
-                    node.key === editIndexParentKey ? 
-                    <>
-                        <InputText id="in" value={editIndex} onChange={(e) => setEditIndex(e.target.value)} style={{width:"70%", marginLeft:5}}/>
-                        <Button icon="pi pi-check" className="p-button-success p-mr-2" onClick={()=> saveEditIndex(node.key)} />
-                    </>
-                    :
-                    <Button icon="pi pi-pencil"  className="p-button-rounded p-button-success p-mr-2" style={{marginLeft:5}} 
-                    onClick={() => {console.log(node.data.name); setEditIndex(node.data.name); setEditIndexParentKey(node.key)} } />
+                    node.key === editIndexParentKey ?
+                        <>
+                            <InputText id="in" value={editIndex} onChange={(e) => setEditIndex(e.target.value)} style={{width: "70%", marginLeft: 5}}/>
+                            <Button icon="pi pi-check" className="p-button-success p-mr-2" onClick={() => saveEditIndex(node.key)}/>
+                        </>
+                        :
+                        <Button icon="pi pi-pencil" className="p-button-rounded p-button-success p-mr-2" style={{marginLeft: 5}}
+                                onClick={() => {
+                                    console.log(node.data.name);
+                                    setEditIndex(node.data.name);
+                                    setEditIndexParentKey(node.key)
+                                }}/>
                 }
-                
+
                 <Button icon="pi pi-trash" className="p-button-rounded p-button-warning" onClick={() => showConfirmDelete(node.data)}
-                    disabled={ node.children.length !== 0 }
-                style={{marginLeft:5}} />
+                        disabled={node.children.length !== 0}
+                        style={{marginLeft: 5}}/>
             </div>
         );
     };
@@ -219,13 +225,13 @@ export const HadithEditor = () => {
 
     return (
         <div className="grid">
-            <Toast ref={toast} />
-            <Toast ref={toastBC} position="bottom-center" />
+            <Toast ref={toast}/>
+            <Toast ref={toastBC} position="bottom-center"/>
             <div className="col-12">
-            
+
                 <div className="p-fluid formgrid grid">
                     {showProgress ? (
-                        <ProgressBar mode="indeterminate" style={{height: "3px"}} />
+                        <ProgressBar mode="indeterminate" style={{height: "3px"}}/>
                     ) : (
                         <></>
                     )}
@@ -233,41 +239,43 @@ export const HadithEditor = () => {
                     <div className="field col-12">
                         <Messages ref={messages}/>
                     </div>
-                    
+
                     <div className="field col-12">
-                        <Editor style={{ height: '320px' }} value={hadithText} onTextChange={(e) => setHadithText(e.htmlValue)} placeholder={t('hadith')}/>
+                        <Editor style={{height: '320px'}} value={hadithText} onTextChange={(e) => setHadithText(e.htmlValue)} placeholder={t('hadith')}/>
                     </div>
 
                     <div className="field col-12">
-                        <InputText id="source" type="text" value={source} onChange={(e) => setSource(e.target.value)} max={255} placeholder={t('source')} />
+                        <InputText id="source" type="text" value={source} onChange={(e) => setSource(e.target.value)} max={255} placeholder={t('source')}/>
                     </div>
 
-                    
-                    <div className="field col-12">
-                        <Editor style={{ height: '320px' }} value={explanation} onTextChange={(e) => setExplanation(e.htmlValue)} placeholder={t('explanation')}/>
-                    </div>
 
                     <div className="field col-12">
-                    <TreeTable globalFilter={globalFilter} globalFilter={globalFilter} header={header} value={nodes} selectionMode="checkbox" selectionKeys={selectedNodeKeys} onSelectionChange={e => setSelectedNodeKeys(e.value)} emptyMessage={t("no_records_found")}>
-                        <Column header={t('hadith_index')} field="name" expander></Column>
-                        <Column header={
-                            newIndexBool ? 
-                            <div className="flex align-items-center justify-content-between">
-                                <InputText id="in" placeholder={t('new')} value={newIndex} onChange={(e) => setNewIndex(e.target.value)} />
-                                <Button icon="pi pi-check" onClick={()=> addNewIndex()} />
-                            </div>
-                            :
-                            <Button icon="pi pi-plus"  className="p-button-rounded p-mr-2" onClick={()=>{setNewIndexBool(true)}} />
-                        } body={actionTemplate} className="text-right" />
-                    </TreeTable>
+                        <Editor style={{height: '320px'}} value={explanation} onTextChange={(e) => setExplanation(e.htmlValue)} placeholder={t('explanation')}/>
                     </div>
 
                     <div className="field col-12">
-                        <Button onClick={(e) => onSubmit(e)} label={t("save")} className="p-button-outlined" />
+                        <TreeTable globalFilter={globalFilter} globalFilter={globalFilter} header={header} value={nodes} selectionMode="checkbox" selectionKeys={selectedNodeKeys} onSelectionChange={e => setSelectedNodeKeys(e.value)} emptyMessage={t("no_records_found")}>
+                            <Column header={t('hadith_index')} field="name" expander></Column>
+                            <Column header={
+                                newIndexBool ?
+                                    <div className="flex align-items-center justify-content-between">
+                                        <InputText id="in" placeholder={t('new')} value={newIndex} onChange={(e) => setNewIndex(e.target.value)}/>
+                                        <Button icon="pi pi-check" onClick={() => addNewIndex()}/>
+                                    </div>
+                                    :
+                                    <Button icon="pi pi-plus" className="p-button-rounded p-mr-2" onClick={() => {
+                                        setNewIndexBool(true)
+                                    }}/>
+                            } body={actionTemplate} className="text-right"/>
+                        </TreeTable>
                     </div>
-                    
+
+                    <div className="field col-12">
+                        <Button onClick={(e) => onSubmit(e)} label={t("save")} className="p-button-outlined"/>
+                    </div>
+
                 </div>
-            
+
             </div>
         </div>
     );

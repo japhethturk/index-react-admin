@@ -1,14 +1,14 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { ProgressBar } from 'primereact/progressbar';
-import { Button } from 'primereact/button';
-import { Badge } from 'primereact/badge';
-import { Tag } from 'primereact/tag';
-import { Avatar } from 'primereact/avatar';
-import { AvatarGroup } from 'primereact/avatargroup';
-import { Chip } from 'primereact/chip';
-import { Skeleton } from 'primereact/skeleton';
-import { ScrollPanel } from 'primereact/scrollpanel';
-import { ScrollTop } from 'primereact/scrolltop';
+import React, {useEffect, useRef, useState} from 'react';
+import {ProgressBar} from 'primereact/progressbar';
+import {Button} from 'primereact/button';
+import {Badge} from 'primereact/badge';
+import {Tag} from 'primereact/tag';
+import {Avatar} from 'primereact/avatar';
+import {AvatarGroup} from 'primereact/avatargroup';
+import {Chip} from 'primereact/chip';
+import {Skeleton} from 'primereact/skeleton';
+import {ScrollPanel} from 'primereact/scrollpanel';
+import {ScrollTop} from 'primereact/scrolltop';
 
 export const MiscDemo = () => {
 
@@ -42,10 +42,10 @@ export const MiscDemo = () => {
                     <h5>ProgressBar</h5>
                     <div className="grid">
                         <div className="col">
-                            <ProgressBar value={value} />
+                            <ProgressBar value={value}/>
                         </div>
                         <div className="col">
-                            <ProgressBar value="50" showValue={false} />
+                            <ProgressBar value="50" showValue={false}/>
                         </div>
                     </div>
                 </div>
@@ -56,18 +56,18 @@ export const MiscDemo = () => {
                     <h5>Numbers</h5>
                     <Badge value="2" className="mr-2"></Badge>
                     <Badge value="8" severity="success" className="mr-2"></Badge>
-                    <Badge value="4" severity="info" className="mr-2"></Badge >
+                    <Badge value="4" severity="info" className="mr-2"></Badge>
                     <Badge value="12" severity="warning" className="mr-2"></Badge>
                     <Badge value="3" severity="danger"></Badge>
 
                     <h5>Positioned Badge</h5>
-                    <i className="pi pi-bell mr-4 p-text-secondary p-overlay-badge" style={{ fontSize: '2rem' }}><Badge value="2" ></Badge></i>
-                    <i className="pi pi-calendar mr-4 p-text-secondary p-overlay-badge" style={{ fontSize: '2rem' }}><Badge value="10+" severity="danger" ></Badge></i>
-                    <i className="pi pi-envelope p-text-secondary p-overlay-badge" style={{ fontSize: '2rem' }}><Badge severity="danger"></Badge></i>
+                    <i className="pi pi-bell mr-4 p-text-secondary p-overlay-badge" style={{fontSize: '2rem'}}><Badge value="2"></Badge></i>
+                    <i className="pi pi-calendar mr-4 p-text-secondary p-overlay-badge" style={{fontSize: '2rem'}}><Badge value="10+" severity="danger"></Badge></i>
+                    <i className="pi pi-envelope p-text-secondary p-overlay-badge" style={{fontSize: '2rem'}}><Badge severity="danger"></Badge></i>
 
                     <h5>Button Badge</h5>
-                    <Button type="button" label="Emails" className="mr-2"><Badge value="8" ></Badge></Button>
-                    <Button type="button" label="Messages" icon="pi pi-users" className="p-button-warning"><Badge value="8" severity="danger" ></Badge></Button>
+                    <Button type="button" label="Emails" className="mr-2"><Badge value="8"></Badge></Button>
+                    <Button type="button" label="Messages" icon="pi pi-users" className="p-button-warning"><Badge value="8" severity="danger"></Badge></Button>
 
                     <h5>Sizes</h5>
                     <Badge value="2" className="mr-2"></Badge>
@@ -84,21 +84,21 @@ export const MiscDemo = () => {
                         <Avatar image="assets/demo/images/avatar/onyamalimba.png" size="large" shape="circle"></Avatar>
                         <Avatar image="assets/demo/images/avatar/ionibowcher.png" size="large" shape="circle"></Avatar>
                         <Avatar image="assets/demo/images/avatar/xuxuefeng.png" size="large" shape="circle"></Avatar>
-                        <Avatar label="+2" shape="circle" size="large" style={{ 'backgroundColor': '#9c27b0', 'color': '#ffffff' }}></Avatar>
+                        <Avatar label="+2" shape="circle" size="large" style={{'backgroundColor': '#9c27b0', 'color': '#ffffff'}}></Avatar>
                     </AvatarGroup>
 
                     <h5>Label - Circle</h5>
                     <Avatar label="P" className="mr-2" size="xlarge" shape="circle"></Avatar>
-                    <Avatar label="V" className="mr-2" size="large" style={{ 'backgroundColor': '#2196F3', 'color': '#ffffff' }} shape="circle"></Avatar>
-                    <Avatar label="U" className="mr-2" style={{ 'backgroundColor': '#9c27b0', 'color': '#ffffff' }} shape="circle"></Avatar>
+                    <Avatar label="V" className="mr-2" size="large" style={{'backgroundColor': '#2196F3', 'color': '#ffffff'}} shape="circle"></Avatar>
+                    <Avatar label="U" className="mr-2" style={{'backgroundColor': '#9c27b0', 'color': '#ffffff'}} shape="circle"></Avatar>
 
                     <h5>Icon - Badge</h5>
-                    <Avatar className="p-overlay-badge" icon="pi pi-user" size="xlarge"><Badge value="4" /></Avatar>
+                    <Avatar className="p-overlay-badge" icon="pi pi-user" size="xlarge"><Badge value="4"/></Avatar>
                 </div>
 
                 <div className="card">
                     <h4>ScrollTop</h4>
-                    <ScrollPanel style={{ width: '250px', height: '200px' }}>
+                    <ScrollPanel style={{width: '250px', height: '200px'}}>
                         <p>
                             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
                             Vitae et leo duis ut diam.
@@ -145,34 +145,34 @@ export const MiscDemo = () => {
                     <h4>Chip</h4>
                     <h5>Basic</h5>
                     <div className="flex align-items-center flex-column sm:flex-row">
-                        <Chip label="Action" className="mr-2 mb-2" />
-                        <Chip label="Comedy" className="mr-2 mb-2" />
-                        <Chip label="Mystery" className="mr-2 mb-2" />
-                        <Chip label="Thriller" className="mb-2" removable />
+                        <Chip label="Action" className="mr-2 mb-2"/>
+                        <Chip label="Comedy" className="mr-2 mb-2"/>
+                        <Chip label="Mystery" className="mr-2 mb-2"/>
+                        <Chip label="Thriller" className="mb-2" removable/>
                     </div>
 
                     <h5>Icon</h5>
                     <div className="flex align-items-center flex-column sm:flex-row">
-                        <Chip label="Apple" icon="pi pi-apple" className="mr-2 mb-2" />
-                        <Chip label="Facebook" icon="pi pi-facebook" className="mr-2 mb-2" />
-                        <Chip label="Google" icon="pi pi-google" className="mr-2 mb-2" />
-                        <Chip label="Microsoft" icon="pi pi-microsoft" className="mb-2" removable />
+                        <Chip label="Apple" icon="pi pi-apple" className="mr-2 mb-2"/>
+                        <Chip label="Facebook" icon="pi pi-facebook" className="mr-2 mb-2"/>
+                        <Chip label="Google" icon="pi pi-google" className="mr-2 mb-2"/>
+                        <Chip label="Microsoft" icon="pi pi-microsoft" className="mb-2" removable/>
                     </div>
 
                     <h5>Image</h5>
                     <div className="flex align-items-center flex-column sm:flex-row">
-                        <Chip label="Amy Elsner" image="assets/demo/images/avatar/amyelsner.png" className="mr-2 mb-2" />
-                        <Chip label="Asiya Javayant" image="assets/demo/images/avatar/asiyajavayant.png" className="mr-2 mb-2" />
-                        <Chip label="Onyama Limba" image="assets/demo/images/avatar/onyamalimba.png" className="mr-2 mb-2" />
-                        <Chip label="Xuxue Feng" image="assets/demo/images/avatar/xuxuefeng.png" className="mb-2" removable />
+                        <Chip label="Amy Elsner" image="assets/demo/images/avatar/amyelsner.png" className="mr-2 mb-2"/>
+                        <Chip label="Asiya Javayant" image="assets/demo/images/avatar/asiyajavayant.png" className="mr-2 mb-2"/>
+                        <Chip label="Onyama Limba" image="assets/demo/images/avatar/onyamalimba.png" className="mr-2 mb-2"/>
+                        <Chip label="Xuxue Feng" image="assets/demo/images/avatar/xuxuefeng.png" className="mb-2" removable/>
                     </div>
 
                     <h5>Styling</h5>
                     <div className="flex align-items-center flex-column sm:flex-row">
-                        <Chip label="Action" className="mr-2 mb-2 custom-chip" />
-                        <Chip label="Apple" icon="pi pi-apple" className="mr-2 mb-2 custom-chip" />
-                        <Chip label="Onyama Limba" image="assets/demo/images/avatar/onyamalimba.png" className="mr-2 mb-2 custom-chip" />
-                        <Chip label="Xuxue Feng" image="assets/demo/images/avatar/xuxuefeng.png" className="custom-chip mb-2" removable />
+                        <Chip label="Action" className="mr-2 mb-2 custom-chip"/>
+                        <Chip label="Apple" icon="pi pi-apple" className="mr-2 mb-2 custom-chip"/>
+                        <Chip label="Onyama Limba" image="assets/demo/images/avatar/onyamalimba.png" className="mr-2 mb-2 custom-chip"/>
+                        <Chip label="Xuxue Feng" image="assets/demo/images/avatar/xuxuefeng.png" className="custom-chip mb-2" removable/>
                     </div>
                 </div>
 

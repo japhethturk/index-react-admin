@@ -1,5 +1,5 @@
 import React, {useContext, useState} from "react";
-import { SelectButton } from "primereact/selectbutton";
+import {SelectButton} from "primereact/selectbutton";
 import DispatchContext from "../../util/context/DispatchContext";
 
 
@@ -15,18 +15,18 @@ const SelectLanguage = (props) => {
     ];
 
     const justifyTemplate = (option) => {
-        return <img src={`${process.env.REACT_APP_URL}images/flag/${option.icon}.svg`} alt={option.icon}  style={{width:50, height:18,}}/>
+        return <img src={`${process.env.REACT_APP_URL}images/flag/${option.icon}.svg`} alt={option.icon} style={{width: 50, height: 18,}}/>
     }
 
 
     const changeLang = (e) => {
         props.onChange(e)
         setLangId(e.value)
-        appDispatch({type: "setLang", data: e.value })
+        appDispatch({type: "setLang", data: e.value})
     }
 
     return (
-        <SelectButton value={langId} options={justifyOptions} onChange={(e) => changeLang(e)} itemTemplate={justifyTemplate} />
+        <SelectButton value={langId} options={justifyOptions} onChange={(e) => changeLang(e)} itemTemplate={justifyTemplate}/>
     );
 }
 

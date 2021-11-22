@@ -1,5 +1,5 @@
 import React from 'react';
-import { Chart } from 'primereact/chart';
+import {Chart} from 'primereact/chart';
 
 export const ChartDemo = () => {
 
@@ -137,7 +137,7 @@ export const ChartDemo = () => {
             <div className="col-12 lg:col-6">
                 <div className="card">
                     <h5>Linear Chart</h5>
-                    <Chart type="line" data={lineData} />
+                    <Chart type="line" data={lineData}/>
                 </div>
 
                 <div className="card flex flex-column align-items-center">
@@ -153,7 +153,7 @@ export const ChartDemo = () => {
             <div className="col-12 lg:col-6">
                 <div className="card">
                     <h5>Bar Chart</h5>
-                    <Chart type="bar" data={barData} />
+                    <Chart type="bar" data={barData}/>
                 </div>
 
                 <div className="card flex flex-column align-items-center">
