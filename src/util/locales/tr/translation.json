@@ -39,5 +39,8 @@
     "explanation": "Açıklama",
     "hadith_index": "Hadis Fihristi",
     "new": "Yeni",
-    "filter": "Filtre"
+    "filter": "Filtre",
+    "add": "Ekle",
+    "hadith_part": "Hadis kısmı",
+    "indexes": "Fihrist"
 }

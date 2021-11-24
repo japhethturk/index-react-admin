@@ -14,43 +14,62 @@ import StateContext from '../../util/context/StateContext';
 import {HadithService} from '../../service/HadithService';
 import {Functions} from '../../util/Functions';
 
-export const HadithEditor = () => {
+export const HadithEditor = (props) => {
     const history = useHistory()
     const {t} = useTranslation()
     const appState = useContext(StateContext);
     const messages = useRef(null)
     const toastBC = useRef(null)
     const toast = useRef(null)
-    const [showProgress, setShowProgress] = useState(true);
-    const [langId, setLangId] = useState(appState.langId)
+    const [showProgress, setShowProgress] = useState(true)
+    // const [langId, setLangId] = useState(props.langId)
     const [hadithText, setHadithText] = useState('')
+    const [source, setSource] = useState('')
     const [explanation, setExplanation] = useState('')
+    const [selectedNodeKeys, setSelectedNodeKeys] = useState([])
     const [globalFilter, setGlobalFilter] = useState(null)
     const [newIndex, setNewIndex] = useState('')
     const [newIndexBool, setNewIndexBool] = useState(false)
     const [newIndexParentKey, setNewIndexParentKey] = useState(null)
     const [editIndex, setEditIndex] = useState('')
     const [editIndexParentKey, setEditIndexParentKey] = useState(null)
-    const [source, setSource] = useState('')
 
 
     const [nodes, setNodes] = useState([]);
-    const [selectedNodeKeys, setSelectedNodeKeys] = useState([]);
     const hadithService = new HadithService();
 
 
     useEffect(() => {
-        hadithService.allIndex(langId).then(response => {
+        hadithService.allIndex(props.langId).then(response => {
             if (response.status === 'ok') {
                 setNodes(Functions.clone(response.list))
             }
         }).finally(() => setShowProgress(false));
-    }, [langId]); // eslint-disable-line react-hooks/exhaustive-deps
+    }, [props.langId]); // eslint-disable-line react-hooks/exhaustive-deps
 
+
+    useEffect(() => {
+        props.childFunc.current = saveHadith
+    }, [props.hadithParts])
+
+    const saveHadith = (type) => {
+        let hadith = {
+            lang_id: props.langId,
+            hadith_text: hadithText,
+            source,
+            explanation,
+            hindexes: selectedNodeKeys
+        }
+        if (type === "part") {
+            props.saveHadithPart(hadith)
+        } else {
+            props.saveHadith(hadith)
+        }
+    }
 
     const addNewIndex = () => {
         let requestBody = {
-            lang_id: langId,
+            lang_id: props.langId,
             name: newIndex,
             parent_id: newIndexParentKey
         };
@@ -59,7 +78,7 @@ export const HadithEditor = () => {
             setNewIndexParentKey(null)
         } else {
             hadithService.storeIndex(requestBody, appState.admin.token).then(response => {
-                if (response.status = "ok") {
+                if (response.status === "ok") {
                     setNodes(response.list)
                     setNewIndex('')
                     setNewIndexBool(false)
@@ -71,14 +90,14 @@ export const HadithEditor = () => {
 
     const saveEditIndex = (id) => {
         let requestBody = {
-            lang_id: langId,
+            lang_id: props.langId,
             name: editIndex,
         };
         if (editIndex === '') {
             setEditIndexParentKey(null)
         } else {
             hadithService.updateIndex(id, requestBody, appState.admin.token).then(response => {
-                if (response.status = "ok") {
+                if (response.status === "ok") {
                     setNodes(response.list)
                     setEditIndex('')
                     setEditIndexParentKey(null)
@@ -91,7 +110,7 @@ export const HadithEditor = () => {
     const confirmDeleteRow = (row) => {
         // messages.current.clear();
 
-        hadithService.removeIndex(row.id, langId, appState.admin.token).then((response) => {
+        hadithService.removeIndex(row.id, props.langId, appState.admin.token).then((response) => {
             if (response.status !== undefined) {
                 if (response.status === "ok") {
                     setNodes(response.list);
@@ -109,7 +128,7 @@ export const HadithEditor = () => {
             severity: 'warn', sticky: true, content: (
                 <div className="p-flex p-flex-column" style={{flex: '1'}}>
                     <div style={{textAlign: 'center'}}>
-                        <i className="pi pi-exclamation-triangle" style={{fontSize: '3rem'}}></i>
+                        <i className="pi pi-exclamation-triangle" style={{fontSize: '3rem'}}/>
                         <h6>{t("confirmation_delete").replaceAll(":attribute", row.name)}</h6>
                     </div>
                     <div className="flex align-items-center justify-content-end">
@@ -132,7 +151,7 @@ export const HadithEditor = () => {
         messages.current.clear();
 
         let requestBody = {
-            lang_id: langId,
+            lang_id: props.langId,
             hadith_text: hadithText,
             source,
             explanation,
@@ -159,16 +178,6 @@ export const HadithEditor = () => {
     }
 
 
-    const cardHeader = (
-        <div className="flex align-items-center justify-content-between mb-0 p-3 pb-0">
-            <div className="flex align-items-center justify-content-between">
-                <Button icon="pi pi-arrow-left" className="p-button-text" onClick={(event) => history.goBack()}/>
-                <h5 className="m-0">{t('hadithes')}</h5>
-            </div>
-            <SelectLanguage value={langId} onChange={(e) => setLangId(e.value)}/>
-        </div>
-    );
-
     const treeTableFuncMap = {
         'globalFilter': setGlobalFilter
     };
@@ -177,7 +186,7 @@ export const HadithEditor = () => {
         return (
             <div className="p-text-right">
                 <div className="p-input-icon-left">
-                    <i className="pi pi-search"></i>
+                    <i className="pi pi-search" />
                     <InputText type="search" onInput={(e) => treeTableFuncMap[`${globalFilterKey}`](e.target.value)} placeholder={t('filter')} size="50"/>
                 </div>
             </div>
@@ -209,7 +218,6 @@ export const HadithEditor = () => {
                         :
                         <Button icon="pi pi-pencil" className="p-button-rounded p-button-success p-mr-2" style={{marginLeft: 5}}
                                 onClick={() => {
-                                    console.log(node.data.name);
                                     setEditIndex(node.data.name);
                                     setEditIndexParentKey(node.key)
                                 }}/>
@@ -236,9 +244,7 @@ export const HadithEditor = () => {
                         <></>
                     )}
 
-                    <div className="field col-12">
-                        <Messages ref={messages}/>
-                    </div>
+                    <Messages ref={messages} />
 
                     <div className="field col-12">
                         <Editor style={{height: '320px'}} value={hadithText} onTextChange={(e) => setHadithText(e.htmlValue)} placeholder={t('hadith')}/>
@@ -248,14 +254,13 @@ export const HadithEditor = () => {
                         <InputText id="source" type="text" value={source} onChange={(e) => setSource(e.target.value)} max={255} placeholder={t('source')}/>
                     </div>
 
-
                     <div className="field col-12">
                         <Editor style={{height: '320px'}} value={explanation} onTextChange={(e) => setExplanation(e.htmlValue)} placeholder={t('explanation')}/>
                     </div>
 
                     <div className="field col-12">
-                        <TreeTable globalFilter={globalFilter} globalFilter={globalFilter} header={header} value={nodes} selectionMode="checkbox" selectionKeys={selectedNodeKeys} onSelectionChange={e => setSelectedNodeKeys(e.value)} emptyMessage={t("no_records_found")}>
-                            <Column header={t('hadith_index')} field="name" expander></Column>
+                        <TreeTable globalFilter={globalFilter} header={header} value={nodes} selectionMode="checkbox" selectionKeys={selectedNodeKeys} onSelectionChange={e => setSelectedNodeKeys(e.value)} emptyMessage={t("no_records_found")}>
+                            <Column header={t('hadith_index')} field="name" expander/>
                             <Column header={
                                 newIndexBool ?
                                     <div className="flex align-items-center justify-content-between">
@@ -270,9 +275,14 @@ export const HadithEditor = () => {
                         </TreeTable>
                     </div>
 
-                    <div className="field col-12">
-                        <Button onClick={(e) => onSubmit(e)} label={t("save")} className="p-button-outlined"/>
-                    </div>
+                    {
+                        props.isMain === undefined ?
+                            <div className="field col-12">
+                                <Button onClick={(e) => {saveHadith("part"); e.preventDefault();}} label={t('add')} className="p-button-outlined"/>
+                            </div>
+                        :
+                            <></>
+                    }
 
                 </div>
 
