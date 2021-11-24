@@ -20,6 +20,7 @@ import {ProductService} from "../service/ProductService";
 import {DataTable} from "primereact/datatable";
 import {Divider} from "primereact/divider";
 import {Accordion, AccordionTab} from "primereact/accordion";
+import {Tag} from "primereact/tag";
 
 export const HadithDetail = () => {
     const history = useHistory()
@@ -35,9 +36,17 @@ export const HadithDetail = () => {
     const [selectedNodeKeys, setSelectedNodeKeys] = useState([])
     const [hadithParts, setHadithParts] = useState([])
     const [showProgress, setShowProgress] = useState(false)
+    const [hIndexNodes, setHIndexNodes] = useState([]);
 
     const hadithService = new HadithService();
 
+    useEffect(() => {
+        hadithService.allIndex(langId).then(response => {
+            if (response.status === 'ok') {
+                setHIndexNodes(Functions.clone(response.list))
+            }
+        }).finally(() => setShowProgress(false))
+    }, [langId]); // eslint-disable-line react-hooks/exhaustive-deps
 
     const cardHeader = (
         <div className="flex align-items-center justify-content-between mb-0 p-3 pb-0">
@@ -80,6 +89,8 @@ export const HadithDetail = () => {
         // console.log([...[], hadith])
     }
 
+
+
     // useEffect(() => {
     //     console.log(hadithParts)
     // }, [hadithParts])
@@ -90,7 +101,7 @@ export const HadithDetail = () => {
             <Button label="Long Content" icon="pi pi-external-link" onClick={() => setDisplayBasic(true)}/>
 
             <Dialog header="Header" visible={displayBasic} style={{width: '50vw'}} onHide={() => setDisplayBasic(false)}>
-                <HadithEditor langId={langId}
+                <HadithEditor langId={langId} nodes={hIndexNodes}
                               saveHadith={hadith => onSubmitHadith(hadith)} saveHadithPart={hadith => onAddHadithPart(hadith)}
                               childFunc={childFunc} />
                 <br/>
@@ -107,43 +118,53 @@ export const HadithDetail = () => {
 
                     <Messages ref={messages}/>
 
-                    <HadithEditor langId={langId} hadithParts={hadithParts}
+                    <HadithEditor langId={langId} hadithParts={hadithParts} nodes={hIndexNodes}
                                   saveHadith={hadith => onSubmitHadith(hadith)} saveHadithPart={hadith => onAddHadithPart(hadith)}
                                   childFunc={childFunc} isMain={true}/>
 
-                    <div className="field col-12">
-                        <Accordion>
-                            {
-                                hadithParts.map((item, index)=>{
-                                    return (
-                                        <AccordionTab key={index} header="Mehdi, Cikis">
-                                            <div>
-                                                <b>{t('hadith')}:</b> <br/>
-                                                {item.hadith_text}
-                                                <br/>
-                                                ({item.source})
-                                            </div>
-                                            <Divider />
-                                            <div>
-                                                <b>{t('explanation')}:</b>  <br/>
-                                                {item.explanation}
-                                            </div>
-                                            <Divider />
-                                            <div>
-                                                <Button icon="pi pi-pencil" className="p-button-rounded p-button-success p-mr-2" />
-                                                <Button icon="pi pi-trash" className="p-button-rounded p-button-warning" style={{marginLeft: 5}}/>
-                                            </div>
-                                        </AccordionTab>
-                                    );
-                                })
-                            }
-                        </Accordion>
-
-                    </div>
-
-
-                    <div className="field col-12">
-                        <Button onClick={() => childFunc.current()} label={t('add')} className="p-button-outlined"/>
+                    <div className="p-fluid formgrid grid">
+                        <div className="field col-9"/>
+                        <div className="field col-3">
+                            <Button style={{float:"right"}} onClick={() => setDisplayBasic(true)} label={t('add_hadith_part')} className="p-button-outlined"/>
+                        </div>
+                        <div className="field col-12">
+                            <Accordion>
+                                {
+                                    hadithParts.map((item, index)=>{
+                                        return (
+                                            <AccordionTab key={index} header={
+                                                Object.entries(item.hindexes).map((element, index)=>{
+                                                    const hIndexId = element[0]
+                                                    const hIndexItem = hIndexNodes.find(it => it.key === parseInt(hIndexId))
+                                                    console.log(hIndexItem)
+                                                    return <Tag key={index} className="p-1" value={hIndexItem.data.name} />
+                                                })
+                                            }>
+                                                <div>
+                                                    <b>{t('hadith')}:</b>
+                                                    <br/>
+                                                    <div dangerouslySetInnerHTML={{ __html: item.hadith_text }} />
+                                                    <i>({item.source})</i>
+                                                </div>
+                                                <Divider />
+                                                <div>
+                                                    <b>{t('explanation')}:</b>  <br/>
+                                                    <div dangerouslySetInnerHTML={{ __html: item.explanation }} />
+                                                </div>
+                                                <Divider />
+                                                <div>
+                                                    <Button icon="pi pi-pencil" className="p-button-rounded p-button-success p-mr-2" />
+                                                    <Button icon="pi pi-trash" className="p-button-rounded p-button-warning" style={{marginLeft: 5}}/>
+                                                </div>
+                                            </AccordionTab>
+                                        );
+                                    })
+                                }
+                            </Accordion>
+                        </div>
+                        <div className="field col-12">
+                            <Button onClick={() => childFunc.current()} label={t('save')} className="p-button-outlined"/>
+                        </div>
                     </div>
                 </Card>
             </div>

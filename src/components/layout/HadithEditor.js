@@ -9,7 +9,6 @@ import {Column} from 'primereact/column';
 import {Toast} from 'primereact/toast';
 import {ProgressBar} from "primereact/progressbar";
 import {Messages} from "primereact/messages";
-import SelectLanguage from './SelectLanguage';
 import StateContext from '../../util/context/StateContext';
 import {HadithService} from '../../service/HadithService';
 import {Functions} from '../../util/Functions';
@@ -22,7 +21,6 @@ export const HadithEditor = (props) => {
     const toastBC = useRef(null)
     const toast = useRef(null)
     const [showProgress, setShowProgress] = useState(true)
-    // const [langId, setLangId] = useState(props.langId)
     const [hadithText, setHadithText] = useState('')
     const [source, setSource] = useState('')
     const [explanation, setExplanation] = useState('')
@@ -35,22 +33,22 @@ export const HadithEditor = (props) => {
     const [editIndexParentKey, setEditIndexParentKey] = useState(null)
 
 
-    const [nodes, setNodes] = useState([]);
+    // const [nodes, setNodes] = useState([]);
     const hadithService = new HadithService();
 
 
-    useEffect(() => {
-        hadithService.allIndex(props.langId).then(response => {
-            if (response.status === 'ok') {
-                setNodes(Functions.clone(response.list))
-            }
-        }).finally(() => setShowProgress(false));
-    }, [props.langId]); // eslint-disable-line react-hooks/exhaustive-deps
+    // useEffect(() => {
+    //     hadithService.allIndex(props.langId).then(response => {
+    //         if (response.status === 'ok') {
+    //             setNodes(Functions.clone(response.list))
+    //         }
+    //     }).finally(() => setShowProgress(false));
+    // }, [props.langId]); // eslint-disable-line react-hooks/exhaustive-deps
 
 
     useEffect(() => {
         props.childFunc.current = saveHadith
-    }, [props.hadithParts])
+    }, [props.hadithParts, selectedNodeKeys])
 
     const saveHadith = (type) => {
         let hadith = {
@@ -79,10 +77,10 @@ export const HadithEditor = (props) => {
         } else {
             hadithService.storeIndex(requestBody, appState.admin.token).then(response => {
                 if (response.status === "ok") {
-                    setNodes(response.list)
-                    setNewIndex('')
-                    setNewIndexBool(false)
-                    setNewIndexParentKey(null)
+                    // setNodes(response.list)
+                    // setNewIndex('')
+                    // setNewIndexBool(false)
+                    // setNewIndexParentKey(null)
                 }
             })
         }
@@ -98,9 +96,9 @@ export const HadithEditor = (props) => {
         } else {
             hadithService.updateIndex(id, requestBody, appState.admin.token).then(response => {
                 if (response.status === "ok") {
-                    setNodes(response.list)
-                    setEditIndex('')
-                    setEditIndexParentKey(null)
+                    // setNodes(response.list)
+                    // setEditIndex('')
+                    // setEditIndexParentKey(null)
                 }
             })
         }
@@ -109,11 +107,10 @@ export const HadithEditor = (props) => {
 
     const confirmDeleteRow = (row) => {
         // messages.current.clear();
-
         hadithService.removeIndex(row.id, props.langId, appState.admin.token).then((response) => {
             if (response.status !== undefined) {
                 if (response.status === "ok") {
-                    setNodes(response.list);
+                    // setNodes(response.list);
                 }
             } else {
             }
@@ -259,7 +256,9 @@ export const HadithEditor = (props) => {
                     </div>
 
                     <div className="field col-12">
-                        <TreeTable globalFilter={globalFilter} header={header} value={nodes} selectionMode="checkbox" selectionKeys={selectedNodeKeys} onSelectionChange={e => setSelectedNodeKeys(e.value)} emptyMessage={t("no_records_found")}>
+                        <TreeTable globalFilter={globalFilter} header={header} value={props.nodes} selectionMode="checkbox"
+                                   selectionKeys={selectedNodeKeys} onSelectionChange={e => setSelectedNodeKeys(e.value)}
+                                   emptyMessage={t("no_records_found")}>
                             <Column header={t('hadith_index')} field="name" expander/>
                             <Column header={
                                 newIndexBool ?

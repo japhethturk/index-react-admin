@@ -42,5 +42,6 @@
     "filter": "Filtre",
     "add": "Ekle",
     "hadith_part": "Hadis kısmı",
-    "indexes": "Fihrist"
+    "indexes": "Fihrist",
+    "add_hadith_part": "Hadis kısmı ekle"
 }
