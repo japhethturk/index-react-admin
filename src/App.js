@@ -400,7 +400,7 @@ const App = () => {
                                     <Route path="/articles" component={Articles}/>
                                     <Route path="/article/add" component={ArticleDetail}/>
                                     <Route path="/article/edit/:id" component={ArticleDetail}/>
-                                    <Route path="/hadithes" component={Hadithes}/>
+                                    <Route path="/hadithes/:page?" component={Hadithes}/>
                                     <Route path="/hadith/add" component={HadithDetail}/>
                                     <Route path="/hadith/edit/:id" component={HadithDetail}/>
                                     <Route path="/formlayout" component={FormLayoutDemo}/>

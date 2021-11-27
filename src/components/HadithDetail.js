@@ -5,19 +5,12 @@ import {useHistory} from 'react-router';
 import StateContext from '../util/context/StateContext';
 import {Button} from 'primereact/button';
 import SelectLanguage from './layout/SelectLanguage';
-import {InputText} from 'primereact/inputtext';
-import {Editor} from 'primereact/editor';
-import {TreeTable} from 'primereact/treetable';
-import {Column} from 'primereact/column';
 import {HadithService} from '../service/HadithService';
 import {Functions} from '../util/Functions';
-import {Toast} from 'primereact/toast';
 import {ProgressBar} from "primereact/progressbar";
 import {Messages} from "primereact/messages";
 import {Dialog} from 'primereact/dialog';
 import {HadithEditor} from './layout/HadithEditor';
-import {ProductService} from "../service/ProductService";
-import {DataTable} from "primereact/datatable";
 import {Divider} from "primereact/divider";
 import {Accordion, AccordionTab} from "primereact/accordion";
 import {Tag} from "primereact/tag";
@@ -30,15 +23,13 @@ export const HadithDetail = () => {
     const [displayBasic, setDisplayBasic] = useState(false)
     const [langId, setLangId] = useState(appState.langId)
     const childFunc = useRef(null)
-    const [hadithText, setHadithText] = useState('')
-    const [source, setSource] = useState('')
-    const [explanation, setExplanation] = useState('')
-    const [selectedNodeKeys, setSelectedNodeKeys] = useState([])
     const [hadithParts, setHadithParts] = useState([])
     const [showProgress, setShowProgress] = useState(false)
     const [hIndexNodes, setHIndexNodes] = useState([]);
+    const emptyEditorData = {hadithText:'', source:'', explanation:'', selectedNodeKeys:[], selectedNodes:[]}
+    const [dataAddHadithEditor, setDataAddHadithEditor] = useState(emptyEditorData)
 
-    const hadithService = new HadithService();
+    const hadithService = new HadithService()
 
     useEffect(() => {
         hadithService.allIndex(langId).then(response => {
@@ -58,52 +49,69 @@ export const HadithDetail = () => {
         </div>
     )
 
+    const sendHadith = (typeMethod, data) => {
+        if (typeMethod === "save") {
+            let hadith = Functions.clone(data)
+            if (hadithParts.length === 0 && hadith.hIndexNodes.length === 0) {
+                messages.current.show([{severity: "error", summary: t("error"), detail: t("index_must_select_or_add_hadith_part"), sticky: true,},])
+            } else {
+                hadith.childiren = hadithParts
+                console.log(hadith)
+                hadithService.store(hadith, appState.admin.token).then((response) => {
+                    if(response.status === "ok") {
 
-    const onSubmitHadith = (data) => {
+                    }
+                }).catch((e) => {
+                    messages.current.show([{severity: "error", summary: t("error"), detail: t("occurred_connecting_error"), sticky: true,},]);
+                }).finally(() => {
+                    setShowProgress(false);
+                });
+            }
+        }
 
-        let hadith = Functions.clone(data)
-        hadith.childiren = hadithParts
-        console.log(hadith)
-        // hadithService.store(hadith, appState.admin.token).then((response) => {
-        //     if (response.status !== undefined) {
-        //         if (response.status === "ok") {
-        //             setHadithText('')
-        //             setSource('')
-        //             setExplanation('')
-        //             setSelectedNodeKeys([])
-        //         }
-        //         messages.current.show([response.message]);
-        //     } else {
-        //         messages.current.show([{severity: "error", summary: t("error"), detail: t("unexpected_response"), sticky: true,},]);
-        //     }
-        // }).catch((e) => {
-        //     messages.current.show([{severity: "error", summary: t("error"), detail: t("occurred_connecting_error"), sticky: true,},]);
-        // }).finally(() => {
-        //     setShowProgress(false);
-        // });
+        if (typeMethod === "addPart") {
+            setHadithParts(prevArray => [...prevArray, data])
+            setDisplayBasic(false)
+        }
+
+        if (typeMethod === "openAddPart") {
+            setDataAddHadithEditor({hadithText: data.hadith_text , source:data.source, explanation:'', selectedNodeKeys:[], selectedNodes:[]})
+            setDisplayBasic(true)
+        }
     }
 
-    const onAddHadithPart = (hadith) => {
-        setHadithParts(prevArray => [...prevArray, hadith])
-        setDisplayBasic(false)
-        // console.log([...[], hadith])
+
+    const addNewIndex = (requestBody) => {
+        hadithService.storeIndex(requestBody, appState.admin.token).then(response => {
+            if (response.status === "ok") {
+                setHIndexNodes(response.list)
+            }
+        })
     }
 
+    const saveEditIndex = (id, requestBody) => {
+        hadithService.updateIndex(id, requestBody, appState.admin.token).then(response => {
+            if (response.status === "ok") {
+                setHIndexNodes(response.list)
+            }
+        })
+    }
 
+    const confirmDeleteRow = (row) => {
+        hadithService.removeIndex(row.id, langId, appState.admin.token).then((response) => {
+            if (response.status === "ok") {
+                setHIndexNodes(response.list)
+            }
+        })
+    };
 
-    // useEffect(() => {
-    //     console.log(hadithParts)
-    // }, [hadithParts])
 
     return (
         <div className="grid">
 
-            <Button label="Long Content" icon="pi pi-external-link" onClick={() => setDisplayBasic(true)}/>
-
-            <Dialog header="Header" visible={displayBasic} style={{width: '50vw'}} onHide={() => setDisplayBasic(false)}>
-                <HadithEditor langId={langId} nodes={hIndexNodes}
-                              saveHadith={hadith => onSubmitHadith(hadith)} saveHadithPart={hadith => onAddHadithPart(hadith)}
-                              childFunc={childFunc} />
+            <Dialog header={t('hadith_part')} visible={displayBasic} style={{width: '60vw'}} onHide={() => setDisplayBasic(false)}>
+                <HadithEditor langId={langId} data={dataAddHadithEditor} sendHadith={sendHadith}
+                              nodes={hIndexNodes} childFunc={childFunc} addNewIndex={addNewIndex} saveEditIndex={saveEditIndex} confirmDeleteRow={confirmDeleteRow} />
                 <br/>
             </Dialog>
 
@@ -118,14 +126,14 @@ export const HadithDetail = () => {
 
                     <Messages ref={messages}/>
 
-                    <HadithEditor langId={langId} hadithParts={hadithParts} nodes={hIndexNodes}
-                                  saveHadith={hadith => onSubmitHadith(hadith)} saveHadithPart={hadith => onAddHadithPart(hadith)}
-                                  childFunc={childFunc} isMain={true}/>
+                    <HadithEditor langId={langId} data={emptyEditorData}
+                                  hadithParts={hadithParts} nodes={hIndexNodes} sendHadith={sendHadith}
+                                  childFunc={childFunc} addNewIndex={addNewIndex} saveEditIndex={saveEditIndex} confirmDeleteRow={confirmDeleteRow} isMain={true}/>
 
                     <div className="p-fluid formgrid grid">
                         <div className="field col-9"/>
                         <div className="field col-3">
-                            <Button style={{float:"right"}} onClick={() => setDisplayBasic(true)} label={t('add_hadith_part')} className="p-button-outlined"/>
+                            <Button style={{float:"right"}}  onClick={() => childFunc.current("openAddPart")} label={t('add_hadith_part')} className="p-button-outlined"/>
                         </div>
                         <div className="field col-12">
                             <Accordion>
@@ -133,11 +141,8 @@ export const HadithDetail = () => {
                                     hadithParts.map((item, index)=>{
                                         return (
                                             <AccordionTab key={index} header={
-                                                Object.entries(item.hindexes).map((element, index)=>{
-                                                    const hIndexId = element[0]
-                                                    const hIndexItem = hIndexNodes.find(it => it.key === parseInt(hIndexId))
-                                                    console.log(hIndexItem)
-                                                    return <Tag key={index} className="p-1" value={hIndexItem.data.name} />
+                                                item.hIndexNodes.map((value, index) => {
+                                                    return <Tag key={index} severity="warning" className="p-1" value={value.data.name} />
                                                 })
                                             }>
                                                 <div>
@@ -163,7 +168,7 @@ export const HadithDetail = () => {
                             </Accordion>
                         </div>
                         <div className="field col-12">
-                            <Button onClick={() => childFunc.current()} label={t('save')} className="p-button-outlined"/>
+                            <Button onClick={() => childFunc.current("save")} label={t('save')} className="p-button-outlined"/>
                         </div>
                     </div>
                 </Card>

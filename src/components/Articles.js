@@ -24,7 +24,7 @@ const Articles = (props) => {
     const {page} = useParams();
     const [treeOption, setTreeOption] = useState([]);
     const [dates, setDates] = useState(null);
-    const [showProgress, setShowProgress] = useState(false);
+    const [showProgress, setShowProgress] = useState(false)
     const [deleteRow, setDeleteRow] = useState({});
     const [selectedCategoryKey, setSelectedCategoryKey] = useState(null);
     const dateFormat = require("dateformat");
@@ -107,26 +107,12 @@ const Articles = (props) => {
                         messages.current.show([response.message]);
                     }
                 } else {
-                    messages.current.show([
-                        {
-                            severity: "error",
-                            summary: t("error"),
-                            detail: t("unexpected_response"),
-                            sticky: true,
-                        },
-                    ]);
+                    messages.current.show([{severity: "error", summary: t("error"), detail: t("unexpected_response"), sticky: true,},]);
                 }
             }).catch((e) => {
-                messages.current.show([
-                    {
-                        severity: "error",
-                        summary: t("error"),
-                        detail: t("occurred_connecting_error"),
-                        sticky: true,
-                    },
-                ]);
+                messages.current.show([{severity: "error", summary: t("error"), detail: t("occurred_connecting_error"), sticky: true,},]);
             }).finally(() => {
-                setShowProgress(false);
+                setShowProgress(false)
             });
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -148,25 +134,11 @@ const Articles = (props) => {
                     }
                     messages.current.show([response.message]);
                 } else {
-                    messages.current.show([
-                        {
-                            severity: "error",
-                            summary: t("error"),
-                            detail: t("unexpected_response"),
-                            sticky: true,
-                        },
-                    ]);
+                    messages.current.show([{severity: "error", summary: t("error"), detail: t("unexpected_response"), sticky: true,},]);
                 }
             })
             .catch((e) => {
-                messages.current.show([
-                    {
-                        severity: "error",
-                        summary: t("error"),
-                        detail: t("occurred_connecting_error"),
-                        sticky: true,
-                    },
-                ]);
+                messages.current.show([{severity: "error", summary: t("error"), detail: t("occurred_connecting_error"), sticky: true, },]);
             })
             .finally(() => {
                 setShowProgress(false);
@@ -182,18 +154,8 @@ const Articles = (props) => {
     const renderDialogFooter = () => {
         return (
             <div>
-                <Button
-                    label={t("no")}
-                    icon="pi pi-times"
-                    onClick={() => onHideDialog()}
-                    className="p-button-text"
-                />
-                <Button
-                    label={t("yes")}
-                    icon="pi pi-check"
-                    onClick={() => confirmDeleteRow()}
-                    autoFocus
-                />
+                <Button label={t("no")} icon="pi pi-times" onClick={() => onHideDialog()} className="p-button-text" />
+                <Button label={t("yes")} icon="pi pi-check" onClick={() => confirmDeleteRow()} autoFocus />
             </div>
         );
     };

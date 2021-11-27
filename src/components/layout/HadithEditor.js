@@ -1,30 +1,23 @@
-import React, {useContext, useEffect, useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {useTranslation} from 'react-i18next';
-import {useHistory} from 'react-router';
 import {Button} from 'primereact/button';
 import {InputText} from 'primereact/inputtext';
 import {Editor} from 'primereact/editor';
 import {TreeTable} from 'primereact/treetable';
 import {Column} from 'primereact/column';
 import {Toast} from 'primereact/toast';
-import {ProgressBar} from "primereact/progressbar";
 import {Messages} from "primereact/messages";
-import StateContext from '../../util/context/StateContext';
-import {HadithService} from '../../service/HadithService';
-import {Functions} from '../../util/Functions';
 
 export const HadithEditor = (props) => {
-    const history = useHistory()
     const {t} = useTranslation()
-    const appState = useContext(StateContext);
     const messages = useRef(null)
     const toastBC = useRef(null)
     const toast = useRef(null)
-    const [showProgress, setShowProgress] = useState(true)
-    const [hadithText, setHadithText] = useState('')
-    const [source, setSource] = useState('')
-    const [explanation, setExplanation] = useState('')
-    const [selectedNodeKeys, setSelectedNodeKeys] = useState([])
+    const [hadithText, setHadithText] = useState(props.data.hadithText)
+    const [source, setSource] = useState(props.data.source)
+    const [explanation, setExplanation] = useState(props.data.explanation)
+    const [selectedNodeKeys, setSelectedNodeKeys] = useState(props.data.selectedNodeKeys)
+    const [selectedNodes, setSelectedNodes] = useState(props.data.selectedNodes)
     const [globalFilter, setGlobalFilter] = useState(null)
     const [newIndex, setNewIndex] = useState('')
     const [newIndexBool, setNewIndexBool] = useState(false)
@@ -33,92 +26,87 @@ export const HadithEditor = (props) => {
     const [editIndexParentKey, setEditIndexParentKey] = useState(null)
 
 
-    // const [nodes, setNodes] = useState([]);
-    const hadithService = new HadithService();
-
-
-    // useEffect(() => {
-    //     hadithService.allIndex(props.langId).then(response => {
-    //         if (response.status === 'ok') {
-    //             setNodes(Functions.clone(response.list))
-    //         }
-    //     }).finally(() => setShowProgress(false));
-    // }, [props.langId]); // eslint-disable-line react-hooks/exhaustive-deps
-
-
     useEffect(() => {
         props.childFunc.current = saveHadith
-    }, [props.hadithParts, selectedNodeKeys])
+    }, [props.hadithParts, selectedNodeKeys, hadithText, source, explanation]) // eslint-disable-line react-hooks/exhaustive-deps
 
-    const saveHadith = (type) => {
-        let hadith = {
-            lang_id: props.langId,
-            hadith_text: hadithText,
-            source,
-            explanation,
-            hindexes: selectedNodeKeys
+    const saveHadith = (typeMethod) => {
+        let error = false
+        if (selectedNodes.length === 0 && props.isMain === undefined) {
+            error = true
+            messages.current.show([{severity: "error", summary: t("error"), detail: t("index_must_select"), sticky: true,},])
         }
-        if (type === "part") {
-            props.saveHadithPart(hadith)
+        if (source === "") {
+            error = true
+            messages.current.show([{severity: "error", summary: t("error"), detail: t("source_is_empty"), sticky: true,},])
+        }
+        if (hadithText === "") {
+            error = true
+            messages.current.show([{severity: "error", summary: t("error"), detail: t("hadith_is_empty"), sticky: true,},])
+        }
+        if(!error) {
+            let hadith = {
+                lang_id: props.langId,
+                hadith_text: hadithText,
+                source,
+                explanation,
+                hIndexNodes: selectedNodes
+            }
+            props.sendHadith(typeMethod, hadith)
         } else {
-            props.saveHadith(hadith)
+            if (props.isMain === undefined)
+                document.getElementById("pr_id_2_content").scrollTo(0, 0)
+            else
+                window.scrollTo(0, 0);
         }
     }
 
     const addNewIndex = () => {
-        let requestBody = {
-            lang_id: props.langId,
-            name: newIndex,
-            parent_id: newIndexParentKey
-        };
         if (newIndex === '') {
             setNewIndexBool(false)
             setNewIndexParentKey(null)
         } else {
-            hadithService.storeIndex(requestBody, appState.admin.token).then(response => {
-                if (response.status === "ok") {
-                    // setNodes(response.list)
-                    // setNewIndex('')
-                    // setNewIndexBool(false)
-                    // setNewIndexParentKey(null)
-                }
-            })
+            let requestBody = {
+                lang_id: props.langId,
+                name: newIndex,
+                parent_id: newIndexParentKey
+            };
+            props.addNewIndex(requestBody)
+            setNewIndex('')
+            setNewIndexBool(false)
+            setNewIndexParentKey(null)
         }
     }
 
     const saveEditIndex = (id) => {
-        let requestBody = {
-            lang_id: props.langId,
-            name: editIndex,
-        };
         if (editIndex === '') {
             setEditIndexParentKey(null)
         } else {
-            hadithService.updateIndex(id, requestBody, appState.admin.token).then(response => {
-                if (response.status === "ok") {
-                    // setNodes(response.list)
-                    // setEditIndex('')
-                    // setEditIndexParentKey(null)
-                }
-            })
+            let requestBody = {
+                lang_id: props.langId,
+                name: editIndex,
+            };
+            props.saveEditIndex(id, requestBody)
+            setEditIndex('')
+            setEditIndexParentKey(null)
         }
     }
 
 
-    const confirmDeleteRow = (row) => {
-        // messages.current.clear();
-        hadithService.removeIndex(row.id, props.langId, appState.admin.token).then((response) => {
-            if (response.status !== undefined) {
-                if (response.status === "ok") {
-                    // setNodes(response.list);
-                }
-            } else {
-            }
-        }).catch((e) => {
-            console.log(e);
-        })
-        toastBC.current.clear()
-    };
+    // const confirmDeleteRow = (row) => {
+    //     // messages.current.clear();
+    //     hadithService.removeIndex(row.id, props.langId, appState.admin.token).then((response) => {
+    //         if (response.status !== undefined) {
+    //             if (response.status === "ok") {
+    //                 // setNodes(response.list);
+    //             }
+    //         } else {
+    //         }
+    //     }).catch((e) => {
+    //         console.log(e);
+    //     })
+    //     toastBC.current.clear()
+    // };
 
     const showConfirmDelete = (row) => {
         toastBC.current.show({
@@ -130,7 +118,7 @@ export const HadithEditor = (props) => {
                     </div>
                     <div className="flex align-items-center justify-content-end">
                         <div className="p-col-6 ">
-                            <Button type="button" label={t('yes')} className="p-button-success" style={{marginRight: 5}} onClick={() => confirmDeleteRow(row)}/>
+                            <Button type="button" label={t('yes')} className="p-button-success" style={{marginRight: 5}} onClick={() => props.confirmDeleteRow(row)}/>
                         </div>
                         <div className="p-col-6">
                             <Button type="button" label={t('no')} className="p-button-secondary" onClick={() => toastBC.current.clear()}/>
@@ -139,39 +127,6 @@ export const HadithEditor = (props) => {
                 </div>
             )
         });
-    }
-
-
-    const onSubmit = (e) => {
-        window.scrollTo(0, 0);
-        setShowProgress(true);
-        messages.current.clear();
-
-        let requestBody = {
-            lang_id: props.langId,
-            hadith_text: hadithText,
-            source,
-            explanation,
-            hindexes: selectedNodeKeys
-        };
-        hadithService.store(requestBody, appState.admin.token).then((response) => {
-            if (response.status !== undefined) {
-                if (response.status === "ok") {
-                    setHadithText('')
-                    setSource('')
-                    setExplanation('')
-                    setSelectedNodeKeys([])
-                }
-                messages.current.show([response.message]);
-            } else {
-                messages.current.show([{severity: "error", summary: t("error"), detail: t("unexpected_response"), sticky: true,},]);
-            }
-        }).catch((e) => {
-            messages.current.show([{severity: "error", summary: t("error"), detail: t("occurred_connecting_error"), sticky: true,},]);
-        }).finally(() => {
-            setShowProgress(false);
-        });
-        e.preventDefault();
     }
 
 
@@ -191,6 +146,15 @@ export const HadithEditor = (props) => {
     }
 
     let header = getHeader('globalFilter');
+
+
+    const onSelect = (event) => {
+        setSelectedNodes(prevArray => [...prevArray, event.node])
+    }
+
+    const onUnselect = (event) => {
+        setSelectedNodes(prevArray => prevArray.filter(item => item.key !== event.node.key))
+    }
 
     const actionTemplate = (node, column) => {
         return (
@@ -235,13 +199,8 @@ export const HadithEditor = (props) => {
             <div className="col-12">
 
                 <div className="p-fluid formgrid grid">
-                    {showProgress ? (
-                        <ProgressBar mode="indeterminate" style={{height: "3px"}}/>
-                    ) : (
-                        <></>
-                    )}
 
-                    <Messages ref={messages} />
+                    <Messages className="field col-12" ref={messages} />
 
                     <div className="field col-12">
                         <Editor style={{height: '320px'}} value={hadithText} onTextChange={(e) => setHadithText(e.htmlValue)} placeholder={t('hadith')}/>
@@ -258,6 +217,7 @@ export const HadithEditor = (props) => {
                     <div className="field col-12">
                         <TreeTable globalFilter={globalFilter} header={header} value={props.nodes} selectionMode="checkbox"
                                    selectionKeys={selectedNodeKeys} onSelectionChange={e => setSelectedNodeKeys(e.value)}
+                                   onSelect={onSelect} onUnselect={onUnselect}
                                    emptyMessage={t("no_records_found")}>
                             <Column header={t('hadith_index')} field="name" expander/>
                             <Column header={
@@ -277,7 +237,7 @@ export const HadithEditor = (props) => {
                     {
                         props.isMain === undefined ?
                             <div className="field col-12">
-                                <Button onClick={(e) => {saveHadith("part"); e.preventDefault();}} label={t('add')} className="p-button-outlined"/>
+                                <Button onClick={(e) => {saveHadith("addPart"); e.preventDefault();}} label={t('add')} className="p-button-outlined"/>
                             </div>
                         :
                             <></>

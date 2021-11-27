@@ -23,4 +23,10 @@ export class HadithService {
         return axios.post(`${process.env.REACT_APP_SECURE_API}hadith/store`, requestBody, Functions.axiosJsonTokenHeader(token)).then((res) => res.data);
     }
 
+    paginate(lazyParams, token) {
+        return axios.get(`${process.env.REACT_APP_API}hadith/paginate`, {
+            headers: Functions.axiosJsonTokenHeader(token).headers,
+            params: lazyParams,
+        }).then((res) => res.data);
+    }
 }

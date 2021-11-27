@@ -43,5 +43,9 @@
     "add": "Ekle",
     "hadith_part": "Hadis kısmı",
     "indexes": "Fihrist",
-    "add_hadith_part": "Hadis kısmı ekle"
+    "add_hadith_part": "Hadis kısmı ekle",
+    "hadith_is_empty": "Hadis alanı boş!",
+    "source_is_empty": "Kaynak alanı boş!",
+    "index_must_select": "Fihrist seçmeniz gerekiyor!",
+    "index_must_select_or_add_hadith_part": "Fihrist seçmeniz ve ya Hadis kısmı eklemeniz gerekiyor!"
 }
