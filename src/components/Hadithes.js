@@ -6,11 +6,13 @@ import StateContext from '../util/context/StateContext';
 import {Button} from 'primereact/button';
 import SelectLanguage from './layout/SelectLanguage';
 import {Messages} from "primereact/messages";
-import {TreeTable} from "primereact/treetable";
-import {Column} from "primereact/column";
 import {NodeService} from "../service/NodeService";
 import {HadithService} from "../service/HadithService";
 import {useParams} from "react-router-dom";
+import {Accordion, AccordionTab} from "primereact/accordion";
+import {Tag} from "primereact/tag";
+import {Divider} from "primereact/divider";
+import HadithAccordionContent from "./layout/HadithAccordionContent";
 
 export const Hadithes = () => {
     const history = useHistory()
@@ -19,8 +21,8 @@ export const Hadithes = () => {
     const messages = useRef(null);
     const [langId, setLangId] = useState(appState.langId)
 
-    const [nodes, setNodes] = useState([])
-    const nodeservice = new NodeService();
+    const [hadithes, setHadithes] = useState([])
+    // const nodeservice = new NodeService();
     const hadithService = new HadithService()
     const {page} = useParams()
     const [showProgress, setShowProgress] = useState(false)
@@ -73,6 +75,7 @@ export const Hadithes = () => {
             hadithService.paginate(lazyParams, appState.admin.token).then((response) => {
                 if (response.status !== undefined) {
                     if (response.status === "ok") {
+                        setHadithes(response.paginate.data)
                         setTotalRecords(response.paginate.total);
                         // console.log(response.paginate)
                         // setArticles(response.paginate.data);
@@ -92,9 +95,12 @@ export const Hadithes = () => {
     }, [lazyParams]);
 
 
-    useEffect(() => {
-        nodeservice.getTreeTableNodes().then(data => setNodes(data));
-    }, []); // eslint-disable-line react-hooks/exhaustive-deps
+    // useEffect(() => {
+    //     // nodeservice.getTreeTableNodes().then(data => setNodes(data));
+    //     hadithService.paginate().then(response=> {
+    //
+    //     })
+    // }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
     const onPage = (event) => {
         let _lazyParams = {...lazyParams, ...event}
@@ -123,17 +129,35 @@ export const Hadithes = () => {
         </div>;
     }
 
+    const onEdit = (item) => {
+        console.log(item)
+    }
+
+    const onDelete = (item) => {
+        console.log(item)
+    }
+
     return (
         <div className="grid">
             <div className="col-12">
                 <Card header={cardHeader}>
                     <Messages className="field col-12" ref={messages} paginator rows={10}/>
-                    <TreeTable value={nodes} loading={showProgress} totalRecords={totalRecords} onPage={onPage}>
-                        <Column field="name" header="Name" expander />
-                        <Column field="size" header="Size" />
-                        <Column field="type" header="Type" />
-                        <Column body={actionTemplate} style={{ textAlign: 'center', width: '10rem' }} />
-                    </TreeTable>
+                    <Accordion>
+                        {
+                            hadithes.map((item, index)=>{
+                                return (
+                                    <AccordionTab key={index}  header={
+                                        item.hindexes.map((value, index) => {
+                                            return <Tag key={index} severity="warning" className="p-1" value={value.name} />
+                                        })
+                                    }>
+                                    <HadithAccordionContent item={item} onEdit={onEdit} onDelete={onDelete}
+                                    />
+                                    </AccordionTab>
+                                )
+                            })
+                        }
+                    </Accordion>
                 </Card>
             </div>
         </div>

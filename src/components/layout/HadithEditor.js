@@ -31,6 +31,18 @@ export const HadithEditor = (props) => {
     }, [props.hadithParts, selectedNodeKeys, hadithText, source, explanation]) // eslint-disable-line react-hooks/exhaustive-deps
 
     const saveHadith = (typeMethod) => {
+        let hadith = {
+            lang_id: props.langId,
+            hadith_text: hadithText,
+            source,
+            explanation,
+            selectedNodeKeys: selectedNodeKeys,
+            hIndexNodes: selectedNodes
+        }
+        if(typeMethod === "openAddPart" || typeMethod === "openEditPart"){
+            props.sendHadith(typeMethod, hadith)
+            return true
+        }
         let error = false
         if (selectedNodes.length === 0 && props.isMain === undefined) {
             error = true
@@ -45,13 +57,6 @@ export const HadithEditor = (props) => {
             messages.current.show([{severity: "error", summary: t("error"), detail: t("hadith_is_empty"), sticky: true,},])
         }
         if(!error) {
-            let hadith = {
-                lang_id: props.langId,
-                hadith_text: hadithText,
-                source,
-                explanation,
-                hIndexNodes: selectedNodes
-            }
             props.sendHadith(typeMethod, hadith)
         } else {
             if (props.isMain === undefined)

@@ -14,6 +14,7 @@ import {HadithEditor} from './layout/HadithEditor';
 import {Divider} from "primereact/divider";
 import {Accordion, AccordionTab} from "primereact/accordion";
 import {Tag} from "primereact/tag";
+import HadithAccordionContent from "./layout/HadithAccordionContent";
 
 export const HadithDetail = () => {
     const history = useHistory()
@@ -51,15 +52,20 @@ export const HadithDetail = () => {
 
     const sendHadith = (typeMethod, data) => {
         if (typeMethod === "save") {
+            window.scrollTo(0, 0);
             let hadith = Functions.clone(data)
             if (hadithParts.length === 0 && hadith.hIndexNodes.length === 0) {
                 messages.current.show([{severity: "error", summary: t("error"), detail: t("index_must_select_or_add_hadith_part"), sticky: true,},])
             } else {
                 hadith.childiren = hadithParts
-                console.log(hadith)
                 hadithService.store(hadith, appState.admin.token).then((response) => {
-                    if(response.status === "ok") {
-
+                    if (response.status !== undefined) {
+                        if (response.status === "ok") {
+                            setDataAddHadithEditor(emptyEditorData)
+                        }
+                        messages.current.show([response.message]);
+                    } else {
+                        messages.current.show([{severity: "error", summary: t("error"), detail: t("unexpected_response"), sticky: true,},]);
                     }
                 }).catch((e) => {
                     messages.current.show([{severity: "error", summary: t("error"), detail: t("occurred_connecting_error"), sticky: true,},]);
@@ -78,6 +84,12 @@ export const HadithDetail = () => {
             setDataAddHadithEditor({hadithText: data.hadith_text , source:data.source, explanation:'', selectedNodeKeys:[], selectedNodes:[]})
             setDisplayBasic(true)
         }
+
+        // if (typeMethod === "openEditPart") {
+        //     setDataAddHadithEditor({hadithText: data.hadith_text , source:data.source, explanation:'', selectedNodeKeys:[], selectedNodes:[]})
+        //     setDisplayBasic(true)
+        // }
+
     }
 
 
@@ -105,6 +117,16 @@ export const HadithDetail = () => {
         })
     };
 
+
+    const onEdit = (item) => {
+        setDataAddHadithEditor({hadithText: item.hadith_text , source: item.source, explanation: item.explanation, selectedNodeKeys: item.selectedNodeKeys, selectedNodes: item.hIndexNodes})
+        setDisplayBasic(true)
+        childFunc.current("openEditPart")
+    }
+
+    const onDelete = (item) => {
+        setHadithParts(hadithParts.filter(it => it.key !== item.key))
+    }
 
     return (
         <div className="grid">
@@ -139,30 +161,41 @@ export const HadithDetail = () => {
                             <Accordion>
                                 {
                                     hadithParts.map((item, index)=>{
+                                        item.key = (Math.random() + 1).toString(36).substring(7)
                                         return (
-                                            <AccordionTab key={index} header={
+                                            <AccordionTab key={index}  header={
                                                 item.hIndexNodes.map((value, index) => {
                                                     return <Tag key={index} severity="warning" className="p-1" value={value.data.name} />
                                                 })
                                             }>
-                                                <div>
-                                                    <b>{t('hadith')}:</b>
-                                                    <br/>
-                                                    <div dangerouslySetInnerHTML={{ __html: item.hadith_text }} />
-                                                    <i>({item.source})</i>
-                                                </div>
-                                                <Divider />
-                                                <div>
-                                                    <b>{t('explanation')}:</b>  <br/>
-                                                    <div dangerouslySetInnerHTML={{ __html: item.explanation }} />
-                                                </div>
-                                                <Divider />
-                                                <div>
-                                                    <Button icon="pi pi-pencil" className="p-button-rounded p-button-success p-mr-2" />
-                                                    <Button icon="pi pi-trash" className="p-button-rounded p-button-warning" style={{marginLeft: 5}}/>
-                                                </div>
+                                                <HadithAccordionContent item={item} onEdit={onEdit} onDelete={onDelete}
+                                                />
                                             </AccordionTab>
-                                        );
+                                        )
+                                        // return (
+                                        //     <AccordionTab key={index} header={
+                                        //         item.hIndexNodes.map((value, index) => {
+                                        //             return <Tag key={index} severity="warning" className="p-1" value={value.data.name} />
+                                        //         })
+                                        //     }>
+                                        //         <div>
+                                        //             <b>{t('hadith')}:</b>
+                                        //             <br/>
+                                        //             <div dangerouslySetInnerHTML={{ __html: item.hadith_text }} />
+                                        //             <i>({item.source})</i>
+                                        //         </div>
+                                        //         <Divider />
+                                        //         <div>
+                                        //             <b>{t('explanation')}:</b>  <br/>
+                                        //             <div dangerouslySetInnerHTML={{ __html: item.explanation }} />
+                                        //         </div>
+                                        //         <Divider />
+                                        //         <div>
+                                        //             <Button icon="pi pi-pencil" className="p-button-rounded p-button-success p-mr-2" />
+                                        //             <Button icon="pi pi-trash" className="p-button-rounded p-button-warning" style={{marginLeft: 5}}/>
+                                        //         </div>
+                                        //     </AccordionTab>
+                                        // );
                                     })
                                 }
                             </Accordion>
