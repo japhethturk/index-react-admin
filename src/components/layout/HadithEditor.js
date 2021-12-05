@@ -7,6 +7,7 @@ import {TreeTable} from 'primereact/treetable';
 import {Column} from 'primereact/column';
 import {Toast} from 'primereact/toast';
 import {Messages} from "primereact/messages";
+import {Checkbox} from "primereact/checkbox";
 
 export const HadithEditor = (props) => {
     const {t} = useTranslation()
@@ -16,6 +17,7 @@ export const HadithEditor = (props) => {
     const [hadithText, setHadithText] = useState(props.data.hadithText)
     const [source, setSource] = useState(props.data.source)
     const [explanation, setExplanation] = useState(props.data.explanation)
+    const [publish, setPublish] = useState(props.data.publish)
     const [selectedNodeKeys, setSelectedNodeKeys] = useState(props.data.selectedNodeKeys)
     const [selectedNodes, setSelectedNodes] = useState(props.data.selectedNodes)
     const [globalFilter, setGlobalFilter] = useState(null)
@@ -31,7 +33,18 @@ export const HadithEditor = (props) => {
     }, [props.hadithParts, selectedNodeKeys, hadithText, source, explanation]) // eslint-disable-line react-hooks/exhaustive-deps
 
     const saveHadith = (typeMethod) => {
+        if (typeMethod === "empty") {
+            setHadithText('')
+            setSource("")
+            setExplanation("")
+            setSelectedNodes([])
+            setSelectedNodeKeys([])
+            setPublish(true)
+            return false
+        }
         let hadith = {
+            key:props.data.key,
+            type:props.data.type,
             lang_id: props.langId,
             hadith_text: hadithText,
             source,
@@ -123,7 +136,7 @@ export const HadithEditor = (props) => {
                     </div>
                     <div className="flex align-items-center justify-content-end">
                         <div className="p-col-6 ">
-                            <Button type="button" label={t('yes')} className="p-button-success" style={{marginRight: 5}} onClick={() => props.confirmDeleteRow(row)}/>
+                            <Button type="button" label={t('yes')} className="p-button-success" style={{marginRight: 5}} onClick={() => {props.confirmDeleteRow(row); toastBC.current.clear();}}/>
                         </div>
                         <div className="p-col-6">
                             <Button type="button" label={t('no')} className="p-button-secondary" onClick={() => toastBC.current.clear()}/>
@@ -242,12 +255,18 @@ export const HadithEditor = (props) => {
                     {
                         props.isMain === undefined ?
                             <div className="field col-12">
-                                <Button onClick={(e) => {saveHadith("addPart"); e.preventDefault();}} label={t('add')} className="p-button-outlined"/>
+                                <Button onClick={(e) => {saveHadith("savePart"); e.preventDefault();}} label={t('save')} className="p-button-outlined"/>
                             </div>
                         :
                             <></>
                     }
 
+                </div>
+                <div className="field col-3">
+                    <div className="p-field-checkbox">
+                        <Checkbox inputId="binary" checked={publish} onChange={e => setPublish(e.checked)} />
+                        <label htmlFor="binary">{t('publish')}</label>
+                    </div>
                 </div>
 
             </div>

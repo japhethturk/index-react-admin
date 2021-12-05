@@ -11,10 +11,11 @@ import {ProgressBar} from "primereact/progressbar";
 import {Messages} from "primereact/messages";
 import {Dialog} from 'primereact/dialog';
 import {HadithEditor} from './layout/HadithEditor';
-import {Divider} from "primereact/divider";
 import {Accordion, AccordionTab} from "primereact/accordion";
 import {Tag} from "primereact/tag";
 import HadithAccordionContent from "./layout/HadithAccordionContent";
+import { Checkbox } from 'primereact/checkbox';
+
 
 export const HadithDetail = () => {
     const history = useHistory()
@@ -27,8 +28,9 @@ export const HadithDetail = () => {
     const [hadithParts, setHadithParts] = useState([])
     const [showProgress, setShowProgress] = useState(false)
     const [hIndexNodes, setHIndexNodes] = useState([]);
-    const emptyEditorData = {hadithText:'', source:'', explanation:'', selectedNodeKeys:[], selectedNodes:[]}
-    const [dataAddHadithEditor, setDataAddHadithEditor] = useState(emptyEditorData)
+    const emptyEditorData = {hadithText:'', source:'', explanation:'', selectedNodeKeys:[], selectedNodes:[], publish: true}
+    const [dataSubHadithEditor, setDataSubHadithEditor] = useState(emptyEditorData)
+    // const [dataMainHadithEditor, setDataMainHadithEditor] = useState(emptyEditorData)
 
     const hadithService = new HadithService()
 
@@ -57,11 +59,14 @@ export const HadithDetail = () => {
             if (hadithParts.length === 0 && hadith.hIndexNodes.length === 0) {
                 messages.current.show([{severity: "error", summary: t("error"), detail: t("index_must_select_or_add_hadith_part"), sticky: true,},])
             } else {
-                hadith.childiren = hadithParts
+                hadith.children = hadithParts
                 hadithService.store(hadith, appState.admin.token).then((response) => {
                     if (response.status !== undefined) {
                         if (response.status === "ok") {
-                            setDataAddHadithEditor(emptyEditorData)
+                            childFunc.current("empty")
+                            // console.log("clone")
+                            // setDataMainHadithEditor({})
+                            // setDataMainHadithEditor(Functions.clone(emptyEditorData))
                         }
                         messages.current.show([response.message]);
                     } else {
@@ -75,18 +80,26 @@ export const HadithDetail = () => {
             }
         }
 
-        if (typeMethod === "addPart") {
-            setHadithParts(prevArray => [...prevArray, data])
+        if (typeMethod === "savePart") {
+            if(data.type === "edit") {
+                setHadithParts(prevArray => {
+                    let filterHadithParts = prevArray.filter(it => it.key !== data.key)
+                    return [...filterHadithParts, data]
+                })
+            } else {
+                setHadithParts(prevArray => [...prevArray, data])
+            }
             setDisplayBasic(false)
         }
 
         if (typeMethod === "openAddPart") {
-            setDataAddHadithEditor({hadithText: data.hadith_text , source:data.source, explanation:'', selectedNodeKeys:[], selectedNodes:[]})
+            let key = (Math.random() + 1).toString(36).substring(7)
+            setDataSubHadithEditor({key:key, hadithText: data.hadith_text , source:data.source, explanation:'', selectedNodeKeys:[], selectedNodes:[], publish: true})
             setDisplayBasic(true)
         }
 
         // if (typeMethod === "openEditPart") {
-        //     setDataAddHadithEditor({hadithText: data.hadith_text , source:data.source, explanation:'', selectedNodeKeys:[], selectedNodes:[]})
+        //     setDataSubHadithEditor({hadithText: data.hadith_text , source:data.source, explanation:'', selectedNodeKeys:[], selectedNodes:[]})
         //     setDisplayBasic(true)
         // }
 
@@ -119,7 +132,7 @@ export const HadithDetail = () => {
 
 
     const onEdit = (item) => {
-        setDataAddHadithEditor({hadithText: item.hadith_text , source: item.source, explanation: item.explanation, selectedNodeKeys: item.selectedNodeKeys, selectedNodes: item.hIndexNodes})
+        setDataSubHadithEditor({type:"edit", key:item.key, hadithText: item.hadith_text , source: item.source, explanation: item.explanation, selectedNodeKeys: item.selectedNodeKeys, selectedNodes: item.hIndexNodes})
         setDisplayBasic(true)
         childFunc.current("openEditPart")
     }
@@ -132,7 +145,7 @@ export const HadithDetail = () => {
         <div className="grid">
 
             <Dialog header={t('hadith_part')} visible={displayBasic} style={{width: '60vw'}} onHide={() => setDisplayBasic(false)}>
-                <HadithEditor langId={langId} data={dataAddHadithEditor} sendHadith={sendHadith}
+                <HadithEditor langId={langId} data={dataSubHadithEditor} sendHadith={sendHadith}
                               nodes={hIndexNodes} childFunc={childFunc} addNewIndex={addNewIndex} saveEditIndex={saveEditIndex} confirmDeleteRow={confirmDeleteRow} />
                 <br/>
             </Dialog>
@@ -161,7 +174,7 @@ export const HadithDetail = () => {
                             <Accordion>
                                 {
                                     hadithParts.map((item, index)=>{
-                                        item.key = (Math.random() + 1).toString(36).substring(7)
+                                        // item.key = (Math.random() + 1).toString(36).substring(7)
                                         return (
                                             <AccordionTab key={index}  header={
                                                 item.hIndexNodes.map((value, index) => {

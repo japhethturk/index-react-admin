@@ -13,6 +13,8 @@ import {Accordion, AccordionTab} from "primereact/accordion";
 import {Tag} from "primereact/tag";
 import {Divider} from "primereact/divider";
 import HadithAccordionContent from "./layout/HadithAccordionContent";
+import {TreeTable} from "primereact/treetable";
+import {Column} from "primereact/column";
 
 export const Hadithes = () => {
     const history = useHistory()
@@ -76,9 +78,7 @@ export const Hadithes = () => {
                 if (response.status !== undefined) {
                     if (response.status === "ok") {
                         setHadithes(response.paginate.data)
-                        setTotalRecords(response.paginate.total);
-                        // console.log(response.paginate)
-                        // setArticles(response.paginate.data);
+                        setTotalRecords(response.paginate.total)
                     } else {
                         messages.current.show([response.message]);
                     }
@@ -95,13 +95,6 @@ export const Hadithes = () => {
     }, [lazyParams]);
 
 
-    // useEffect(() => {
-    //     // nodeservice.getTreeTableNodes().then(data => setNodes(data));
-    //     hadithService.paginate().then(response=> {
-    //
-    //     })
-    // }, []); // eslint-disable-line react-hooks/exhaustive-deps
-
     const onPage = (event) => {
         let _lazyParams = {...lazyParams, ...event}
         setLazyParams(_lazyParams)
@@ -114,6 +107,17 @@ export const Hadithes = () => {
         }
     };
 
+    const onSort = (event) => {
+        let _lazyParams = {...lazyParams, ...event};
+        setLazyParams(_lazyParams);
+    };
+
+    const onFilter = (event) => {
+        let _lazyParams = {...lazyParams, ...event};
+        _lazyParams["first"] = 0;
+        setLazyParams(_lazyParams);
+    };
+
     const cardHeader = (
         <div className="flex align-items-center justify-content-between mb-0 p-3 pb-0">
             <h5 className="m-0">{t('hadithes')}</h5>
@@ -121,13 +125,6 @@ export const Hadithes = () => {
             <Button icon="pi pi-plus" className="p-button-text" onClick={(e) => history.push('/hadith/add')}/>
         </div>
     );
-
-    const actionTemplate = (node, column) => {
-        return <div>
-            <Button type="button" icon="pi pi-search" className="p-button-success" style={{ marginRight: '.5em' }} />
-            <Button type="button" icon="pi pi-pencil" className="p-button-warning" />
-        </div>;
-    }
 
     const onEdit = (item) => {
         console.log(item)
@@ -137,27 +134,33 @@ export const Hadithes = () => {
         console.log(item)
     }
 
+    const actionTemplate = (node, column) => {
+        return <div>
+            <Button type="button" icon="pi pi-search" className="p-button-success" style={{ marginRight: '.5em' }} />
+            <Button type="button" icon="pi pi-pencil" className="p-button-warning" />
+        </div>;
+    }
+
+    const hadithTemplate = (node, column) => {
+        return (<div>
+                    <div dangerouslySetInnerHTML={{ __html: node.hadith_text }} />
+                    <i>({node.source})</i>
+                    <div style={{marginTop:10}}>
+                        {actionTemplate(node,column)}
+                    </div>
+                </div>);
+    }
+
     return (
         <div className="grid">
             <div className="col-12">
                 <Card header={cardHeader}>
-                    <Messages className="field col-12" ref={messages} paginator rows={10}/>
-                    <Accordion>
-                        {
-                            hadithes.map((item, index)=>{
-                                return (
-                                    <AccordionTab key={index}  header={
-                                        item.hindexes.map((value, index) => {
-                                            return <Tag key={index} severity="warning" className="p-1" value={value.name} />
-                                        })
-                                    }>
-                                    <HadithAccordionContent item={item} onEdit={onEdit} onDelete={onDelete}
-                                    />
-                                    </AccordionTab>
-                                )
-                            })
-                        }
-                    </Accordion>
+                    <Messages className="field col-12" ref={messages} />
+                    <TreeTable value={hadithes} loading={showProgress} paginator first={lazyParams.first} rows={lazyParams.rows} totalRecords={totalRecords}
+                               onPage={onPage} onSort={onSort} sortField={lazyParams.sortField} sortOrder={lazyParams.sortOrder}
+                               onFilter={onFilter} filters={lazyParams.filters}>
+                        <Column field="hadith" body={hadithTemplate} filter expander/>
+                    </TreeTable>
                 </Card>
             </div>
         </div>
