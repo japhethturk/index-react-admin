@@ -228,11 +228,11 @@ const Articles = (props) => {
     const operationItem = (rowData) => {
         return [
             {
-                label: t("more"),
+                label: t("show"),
                 icon: "pi pi-external-link",
                 command: () => {
                     let win = window.open(
-                        `${window.root}article/${rowData.slug}`,
+                        `${process.env.REACT_APP_URL}article/${rowData.slug}`,
                         "_blank"
                     );
                     win.focus();
@@ -243,7 +243,7 @@ const Articles = (props) => {
                 icon: "pi pi-pencil",
                 command: () => {
                     history.push(
-                        `${window.option.admin}article/edit/${rowData.id}`
+                        `article/edit/${rowData.id}`
                     );
                 },
             },

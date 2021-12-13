@@ -47,5 +47,6 @@
     "hadith_is_empty": "Hadis alanı boş!",
     "source_is_empty": "Kaynak alanı boş!",
     "index_must_select": "Fihrist seçmeniz gerekiyor!",
-    "index_must_select_or_add_hadith_part": "Fihrist seçmeniz ve ya Hadis kısmı eklemeniz gerekiyor!"
+    "index_must_select_or_add_hadith_part": "Fihrist seçmeniz ve ya Hadis kısmı eklemeniz gerekiyor!",
+    "show": "Görüntüle"
 }
